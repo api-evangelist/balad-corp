@@ -1,0 +1,34 @@
+generated: '2026-07-18'
+method: searched
+source: https://developers.balad.tech/authorization-1459814m0.md
+docs: https://developers.balad.tech/authorization-1459814m0.md
+summary:
+  types: [oauth2]
+  oauth2_flows: [clientCredentials]
+  server_to_server: true
+  transport: Bearer access token in Authorization header
+schemes:
+  - name: OAuth2ClientCredentials
+    type: oauth2
+    flow: clientCredentials
+    token_endpoint: /identity/v1/token
+    grant_type: client_credentials
+    request_content_type: application/x-www-form-urlencoded
+    request_fields: [grant_type, client_id, client_secret]
+    response_fields: [access_token, token_type, expires_in, scope]
+    token_type: Bearer
+    expires_in_seconds: 3600
+    header: 'Authorization: Bearer <ACCESS_TOKEN>'
+    scoped: true
+    scope_note: >-
+      Tokens are scoped to specific product APIs (remittances, collections, bills, vouchers).
+      Balad does not publish an enumerated scope reference; scope is returned on the token response.
+    sources: [openapi/balad-corp-gateway-openapi.yml]
+notes:
+  credentials: >-
+    Client ID and Client Secret are issued during partner onboarding and managed from the
+    Balad Dashboard (Developer -> Client Secrets). A maximum of 5 active secrets is allowed.
+  ip_whitelisting: >-
+    Production API access is IP-restricted; partners must supply static IP(s) to be whitelisted
+    before authenticating against production APIs (see Go Live).
+  revocation: Access tokens/secrets can be revoked instantly from the Balad Dashboard.
