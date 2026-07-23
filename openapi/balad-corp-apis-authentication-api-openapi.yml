@@ -1,0 +1,126 @@
+openapi: 3.0.1
+info:
+  title: Balad Gateway APIs/Authentication API
+  description: Balad Gateway APIs — a suite of RESTful endpoints for secure inward cross-border remittances and payouts into Egypt (bank transfers, mobile wallets, cash pickup). Covers authentication, exchange rates, balance, secrets management, lookups, and the full transaction lifecycle. Assembled by API Evangelist from the provider's per-operation OpenAPI fragments published on developers.balad.tech.
+  version: 1.0.0
+  contact:
+    name: Balad Support
+    email: support@balad.me
+    url: https://developers.balad.tech/
+servers: []
+tags:
+- name: APIs/Authentication
+paths:
+  /identity/v1/token:
+    post:
+      summary: Token
+      deprecated: false
+      description: "### Request\n\nThis API is intended to allow the Partner to authenticate and obtain an access token from B. The Partner sends their `client_id` and `client_secret` (using `grant_type: client_credentials`) to B's token endpoint. B validates these credentials and, if successful, returns a Bearer `access_token`, `token_type`, and `expires_in`. This access token must be included in the `Authorization` header (e.g., `Authorization: Bearer` ) for all subsequent API calls to B's protected resources.\n\n#### Request Body\n\n- This request uses the `x-www-form-urlencoded` body type.\n    \n\n### Response\n\nThe response for this request is a JSON object with the following properties:\n\n- `access_token` (string): The access token for the identity verification.\n    \n- `token_type` (string): The type of token.\n    \n- `expires_in` (integer): The duration for which the token is valid.\n    \n- `scope` (string): The scope of the token."
+      tags:
+      - APIs/Authentication
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: true
+        example: application/x-www-form-urlencoded
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  example: client_credentials
+                  type: string
+                client_id:
+                  example: xxxx-xxx-xxx-xxxx-xxx
+                  type: string
+                client_secret:
+                  example: xxxxxxxxxxxxxxxxxxxxxxxxx
+                  type: string
+              required:
+              - grant_type
+              - client_id
+              - client_secret
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  token_type:
+                    type: string
+                  expires_in:
+                    type: integer
+                  scope:
+                    type: string
+                required:
+                - access_token
+                - token_type
+                - expires_in
+                - scope
+                x-apidog-orders:
+                - access_token
+                - token_type
+                - expires_in
+                - scope
+              example:
+                access_token: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                token_type: Bearer
+                expires_in: 3600
+                scope: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+          headers: {}
+          x-apidog-name: Success
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                    required:
+                    - error
+                    x-apidog-orders:
+                    - error
+                required:
+                - data
+                x-apidog-orders:
+                - data
+              example:
+                data:
+                  error: invalid_client
+          headers: {}
+          x-apidog-name: Invalid Client
+      security:
+      - Balad Token: []
+        x-apidog:
+          required: true
+          schemeGroups:
+          - id: 87aTaQp8pR3_G2Uh_UKds
+            schemeIds:
+            - Balad Token
+          use:
+            id: 87aTaQp8pR3_G2Uh_UKds
+      x-apidog-folder: APIs/Authentication
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-20919907-run
+components:
+  securitySchemes:
+    Balad Token:
+      type: bearer
+      scheme: bearer
+    bearer:
+      type: http
+      scheme: bearer

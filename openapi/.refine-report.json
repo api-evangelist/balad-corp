@@ -1,0 +1,26 @@
+{
+  "provider": "balad-corp",
+  "sources": [
+    "balad-corp-apis-authentication-api-openapi.yml",
+    "balad-corp-apis-core-balance-api-openapi.yml",
+    "balad-corp-apis-core-exchange-rate-api-openapi.yml",
+    "balad-corp-apis-core-secrets-api-openapi.yml",
+    "balad-corp-apis-link-lookups-api-openapi.yml",
+    "balad-corp-apis-link-reconciliation-api-openapi.yml",
+    "balad-corp-apis-link-transactions-api-openapi.yml"
+  ],
+  "outputs": [
+    "balad-corp-apis-authentication-api-openapi.yml",
+    "balad-corp-apis-core-balance-api-openapi.yml",
+    "balad-corp-apis-core-exchange-rate-api-openapi.yml",
+    "balad-corp-apis-core-secrets-api-openapi.yml",
+    "balad-corp-apis-link-lookups-api-openapi.yml",
+    "balad-corp-apis-link-reconciliation-api-openapi.yml",
+    "balad-corp-apis-link-transactions-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

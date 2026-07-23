@@ -1,0 +1,225 @@
+openapi: 3.0.1
+info:
+  title: Balad Gateway APIs/Authentication APIs/Link/Reconciliation API
+  description: Balad Gateway APIs — a suite of RESTful endpoints for secure inward cross-border remittances and payouts into Egypt (bank transfers, mobile wallets, cash pickup). Covers authentication, exchange rates, balance, secrets management, lookups, and the full transaction lifecycle. Assembled by API Evangelist from the provider's per-operation OpenAPI fragments published on developers.balad.tech.
+  version: 1.0.0
+  contact:
+    name: Balad Support
+    email: support@balad.me
+    url: https://developers.balad.tech/
+servers: []
+tags:
+- name: APIs/Link/Reconciliation
+paths:
+  /remit-api/v1/reconciliation:
+    get:
+      summary: Reconciliation
+      deprecated: false
+      description: Fetch account reconciliation details including opening & closing balances and transaction history.
+      tags:
+      - APIs/Link/Reconciliation
+      parameters:
+      - name: start_date
+        in: query
+        description: ''
+        required: false
+        example: 16-Nov-2025
+        schema:
+          type: string
+      - name: end_date
+        in: query
+        description: ''
+        required: false
+        example: 16-Nov-2025
+        schema:
+          type: string
+      - name: page_no
+        in: query
+        description: ''
+        required: false
+        example: '1'
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: ''
+        required: false
+        example: '50'
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: ''
+        required: false
+        example: application/json
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      customer_name:
+                        type: string
+                      currency:
+                        type: string
+                      from_date:
+                        type: string
+                      to_date:
+                        type: string
+                      opening_balance:
+                        type: number
+                        nullable: true
+                      closing_balance:
+                        type: number
+                        nullable: true
+                      transactions:
+                        type: object
+                        properties:
+                          page_no:
+                            type: integer
+                          page_size:
+                            type: integer
+                          total:
+                            type: integer
+                          has_next:
+                            type: boolean
+                          items:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                transaction_date:
+                                  type: string
+                                value_date:
+                                  type: string
+                                reference_no:
+                                  type: string
+                                channel_type:
+                                  type: string
+                                transaction_type:
+                                  type: string
+                                transaction_amount:
+                                  type: integer
+                                transaction_amount_currency:
+                                  type: string
+                                exchange_rate:
+                                  type: number
+                                debit:
+                                  type: number
+                                credit:
+                                  type: integer
+                                balance_amount:
+                                  type: number
+                                debit_credit_currency:
+                                  type: string
+                                transaction_status:
+                                  type: string
+                                date:
+                                  type: string
+                                description:
+                                  type: string
+                                notes:
+                                  type: string
+                              required:
+                              - transaction_date
+                              - value_date
+                              - reference_no
+                              - channel_type
+                              - transaction_type
+                              - transaction_amount
+                              - transaction_amount_currency
+                              - exchange_rate
+                              - debit
+                              - credit
+                              - balance_amount
+                              - debit_credit_currency
+                              - transaction_status
+                              - date
+                              - description
+                              - notes
+                              x-apidog-orders:
+                              - transaction_date
+                              - value_date
+                              - reference_no
+                              - channel_type
+                              - transaction_type
+                              - transaction_amount
+                              - transaction_amount_currency
+                              - exchange_rate
+                              - debit
+                              - credit
+                              - balance_amount
+                              - debit_credit_currency
+                              - transaction_status
+                              - date
+                              - description
+                              - notes
+                        required:
+                        - page_no
+                        - page_size
+                        - total
+                        - has_next
+                        - items
+                        x-apidog-orders:
+                        - page_no
+                        - page_size
+                        - total
+                        - has_next
+                        - items
+                      start_date:
+                        type: string
+                      end_date:
+                        type: string
+                    required:
+                    - customer_name
+                    - currency
+                    - from_date
+                    - to_date
+                    - opening_balance
+                    - closing_balance
+                    - transactions
+                    - start_date
+                    - end_date
+                    x-apidog-orders:
+                    - customer_name
+                    - currency
+                    - from_date
+                    - to_date
+                    - opening_balance
+                    - closing_balance
+                    - transactions
+                    - start_date
+                    - end_date
+                  errors:
+                    type: 'null'
+                  01K5EHM5AG34A0RDDRQZWNMS9Q:
+                    type: string
+                required:
+                - data
+                - errors
+                - 01K5EHM5AG34A0RDDRQZWNMS9Q
+                x-apidog-orders:
+                - data
+                - errors
+                - 01K5EHM5AG34A0RDDRQZWNMS9Q
+          headers: {}
+          x-apidog-name: Success
+      security: []
+      x-apidog-folder: APIs/Link/Reconciliation
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-21667941-run
+components:
+  securitySchemes:
+    Balad Token:
+      type: bearer
+      scheme: bearer
+    bearer:
+      type: http
+      scheme: bearer

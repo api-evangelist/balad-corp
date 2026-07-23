@@ -1,0 +1,25 @@
+generated: '2026-07-18'
+method: searched
+hosts:
+  - host: https://developers.balad.tech
+    documents:
+      - {path: /llms.txt, status: 200, file: ../llms/balad-corp-llms.txt}
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+  - host: https://balad.me
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /llms.txt, status: 404}
+  - host: https://www.balad.me
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /openapi.json, status: 404}
+      - {path: /llms.txt, status: 404}
+note: >-
+  Only developers.balad.tech publishes a discovery document (/llms.txt). The production API host
+  is issued privately on onboarding and was not probed. No security.txt or OIDC/OAuth discovery found.

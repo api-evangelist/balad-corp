@@ -1,0 +1,46 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/balad-corp-gateway-openapi.yml
+docs: https://developers.balad.tech/
+entities:
+  - name: Transaction
+    key: remitter_reference_no
+    description: A remittance/payout instruction from a partner to an Egyptian beneficiary.
+    fields: [transaction_type, remitter_reference_no, sender_*, receiver_*, sending_currency_code, amount, account_no, receiver_bank_code, source_of_remittance, purpose, status]
+    operations: [Create transaction, Update transaction, Cancel transaction, Get transaction status V2, Transactions List, Export Transactions List, Calculate receiving amount, Validate Account]
+  - name: Service
+    key: service_id
+    description: A configured partner service/product against which balance and exchange rates are scoped.
+    operations: [Get Current Balance, Exchange Rates]
+  - name: ExchangeRate
+    description: Current FX rate for a partner+service.
+    operations: [Exchange Rates]
+  - name: Balance
+    description: Real-time wallet/account balance for a service_id.
+    operations: [Get Current Balance]
+  - name: Secret
+    key: secret_id
+    description: Client secret credential (max 5 active) used to obtain access tokens.
+    operations: [Generate Secret, Delete Secret, Get Secrets]
+  - name: Bank
+    key: bank_code
+    description: A CBE-licensed receiving bank; filterable by transaction type and country.
+    operations: [Banks List]
+  - name: Lookup
+    description: Reference data - purposes, sources of funds, receiver relationships.
+    operations: [Purposes List, Sources List, Relations]
+  - name: WebhookEvent
+    key: id
+    description: StatusUpdateV2 event envelope delivered to the partner webhook.
+    operations: [Link.Transaction.StatusUpdateV2]
+relationships:
+  - {from: Transaction, type: belongs_to, to: Service, via: service context}
+  - {from: Transaction, type: has_one, to: Bank, via: receiver_bank_code}
+  - {from: Transaction, type: belongs_to, to: Lookup, via: purpose/source_of_remittance}
+  - {from: Transaction, type: has_many, to: WebhookEvent, via: referenceNumber}
+  - {from: Balance, type: belongs_to, to: Service, via: service_id}
+  - {from: ExchangeRate, type: belongs_to, to: Service, via: serviceId}
+  - {from: Secret, type: belongs_to, to: Partner, via: account}
+id_conventions:
+  remitter_reference_no: Partner-supplied unique reference; also the idempotency key.
+  transaction_status_codes: Numeric (0 Created, 1 Transferred, 2 Bank Processing, 4 Returned, 7 Canceled, 8 Pending, 9 Failed, 11-16 compliance/bank states).

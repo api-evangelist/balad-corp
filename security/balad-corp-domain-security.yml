@@ -1,0 +1,26 @@
+generated: '2026-07-18'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: balad.me
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Dec 31 15:36:13 2026 GMT
+  hsts: null
+- host: developers.balad.tech
+  https: true
+  tls_version: TLSv1.2
+  cert_expires: Aug 22 00:03:05 2026 GMT
+  hsts: false
+domains:
+- domain: balad.me
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: none
+- domain: balad.tech
+  dnssec: true
+  caa: []
+  spf: false
+  dmarc: false

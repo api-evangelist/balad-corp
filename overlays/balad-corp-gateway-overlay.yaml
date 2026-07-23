@@ -1,0 +1,52 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Balad Gateway API
+  version: 1.0.0
+extends: openapi/balad-corp-gateway-openapi.yml
+# The harvested Balad OpenAPI fragments carry no operationId values. This overlay proposes
+# stable operationIds (our enhancement) plus API Evangelist rating/context metadata. It never
+# mutates the harvested spec.
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-rating: 3
+      x-apievangelist-provenance: Assembled from per-operation OpenAPI fragments on developers.balad.tech
+      x-apievangelist-industry: [fintech, payments, remittance, cross-border-payout]
+  - target: $.paths['/identity/v1/token'].post
+    update: {operationId: getToken}
+  - target: $.paths['/core/services/{serviceId}/exchange-rates'].get
+    update: {operationId: getExchangeRates}
+  - target: $.paths['/core/v1/services/{service_id}/balance'].get
+    update: {operationId: getBalance}
+  - target: $.paths['/core/v1/developer/secrets'].post
+    update: {operationId: generateSecret}
+  - target: $.paths['/core/v1/developer/secrets'].get
+    update: {operationId: listSecrets}
+  - target: $.paths['/core/v1/developer/secrets/delete'].post
+    update: {operationId: deleteSecret}
+  - target: $.paths['/remit-api/v1/lookups/purposes'].get
+    update: {operationId: listPurposes}
+  - target: $.paths['/remit-api/v1/lookups/sources'].get
+    update: {operationId: listSources}
+  - target: $.paths['/remit-api/banks'].get
+    update: {operationId: listBanks}
+  - target: $.paths['/remit-api/v1/lookups/relationships'].get
+    update: {operationId: listRelations}
+  - target: $.paths['/remit-api/v1/transactions'].post
+    update: {operationId: createTransaction}
+  - target: $.paths['/remit-api/v1/transactions'].get
+    update: {operationId: listTransactions}
+  - target: $.paths['/remit-api/v1/transactions/update'].post
+    update: {operationId: updateTransaction}
+  - target: $.paths['/remit-api/v1/transactions/cancel'].post
+    update: {operationId: cancelTransaction}
+  - target: $.paths['/remit-api/v2/transactions/{remitter_reference_no}/status'].get
+    update: {operationId: getTransactionStatusV2}
+  - target: $.paths['/remit-api/v1/transactions/export'].get
+    update: {operationId: exportTransactions}
+  - target: $.paths['/remit-api/v1/transactions/calculate-receiving-amount'].post
+    update: {operationId: calculateReceivingAmount}
+  - target: $.paths['/remit-api/v1/transactions/validate-account'].post
+    update: {operationId: validateAccount}
+  - target: $.paths['/remit-api/v1/reconciliation'].get
+    update: {operationId: getReconciliation}

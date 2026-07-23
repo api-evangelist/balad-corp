@@ -1,0 +1,2394 @@
+openapi: 3.0.1
+info:
+  title: Balad Gateway APIs/Authentication APIs/Link/Transactions API
+  description: Balad Gateway APIs — a suite of RESTful endpoints for secure inward cross-border remittances and payouts into Egypt (bank transfers, mobile wallets, cash pickup). Covers authentication, exchange rates, balance, secrets management, lookups, and the full transaction lifecycle. Assembled by API Evangelist from the provider's per-operation OpenAPI fragments published on developers.balad.tech.
+  version: 1.0.0
+  contact:
+    name: Balad Support
+    email: support@balad.me
+    url: https://developers.balad.tech/
+servers: []
+tags:
+- name: APIs/Link/Transactions
+paths:
+  /remit-api/v1/transactions/calculate-receiving-amount:
+    post:
+      summary: Calculate receiving amount
+      deprecated: false
+      description: 'This API endpoint calculates and retrieves the receiving amount based on the sending amount. The transaction type is optional; if provided, the API will return the receiving amount in the currency associated with the specified transaction type. If the transaction type is not provided, the API will return the receiving amount for all available currencies.
+
+
+        **Request Params**
+
+
+        | **Parameter** | **Type** | **Mandatory** | **Remarks** |
+
+        | --- | --- | --- | --- |
+
+        | amount_usd | Integer | Y | This is the amount being sent and needs to be used for calculating the corresponding receiving amount. |
+
+        | transaction_type | Integer | N | The transaction type  <br>1- Cash  <br>2 - Account Credit  <br>3 - Wallet  <br>4 -Credit/Debit Card |
+
+
+        **Response Params**
+
+
+        | **SI No** | **Parameter** | **Remarks** |
+
+        | --- | --- | --- |
+
+        | 1 | currency_code | the receiving currency |
+
+        | 2 | amount | the receiving amount |'
+      tags:
+      - APIs/Link/Transactions
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: false
+        example: application/json
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+              x-apidog-orders: []
+            example: "{\r\n    \"amount_usd\":XXXX,\r\n    \"transaction_type\":X\r\n}"
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                x-apidog-orders: []
+              example: "{\r\n    \"data\": [\r\n        {\r\n            \"currency_code\": \"EGP\",\r\n            \"amount\":XXX\r\n        },\r\n        {\r\n            \"currency_code\": \"USD\",\r\n            \"amount\":XXX\r\n        }\r\n    ],\r\n    \"errors\": null\r\n}\r\n"
+          headers: {}
+          x-apidog-name: EG Country
+      security:
+      - Balad Token: []
+        x-apidog:
+          required: true
+          schemeGroups:
+          - id: 87aTaQp8pR3_G2Uh_UKds
+            schemeIds:
+            - Balad Token
+          use:
+            id: 87aTaQp8pR3_G2Uh_UKds
+      x-apidog-folder: APIs/Link/Transactions
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-20919923-run
+  /remit-api/v1/transactions/cancel:
+    post:
+      summary: Cancel transaction
+      deprecated: false
+      description: 'This method handles transaction cancellation within the Balad Remit system.
+
+
+        ### Cancellable Transactions
+
+
+        Only the following transaction statuses can be cancelled. Each status results in either an **Instant Cancel (Code 7)** or **Under Cancellation (Code 22)** depending on the case.
+
+
+
+        | Transaction Status Code | Transaction Status                   | Transaction Type | Resulting Status            |
+
+        |-------------|-------------------------------|------------------|------------------------------|
+
+        | **0**       | Created                       | All              | **7 (Cancelled)**            |
+
+        | **2**       | In Progress                   | Cash             | **22 (Under Cancellation)**  |
+
+        | **8**       | Pending                       | All              | **7 (Cancelled)**            |
+
+        | **11**      | Balad Compliance Suspended    | All              | **7 (Cancelled)**            |
+
+        | **12**      | Balad Compliance Approved     | All              | **7 (Cancelled)**            |
+
+        | **16**      | Bank Compliance Suspended     | Cash             | **22 (Under Cancellation)**  |
+
+        | **19**      | Ready For Pickup   | Cash             | **22 (Under Cancellation)**  |
+
+
+
+        ---
+
+
+
+
+        ### Cancellation Reasons
+
+        Use one of the following values in the **reason** field when submitting a cancellation request.
+
+        If none of the predefined reasons apply, set `reason` to **13** and include your explanation in `other_reason`.
+
+
+
+
+        | Code   | Reason                                                |
+
+        | ------ | ----------------------------------------------------- |
+
+        | **1**  | I entered the wrong recipient name                    |
+
+        | **2**  | I entered the wrong account, wallet, or phone number  |
+
+        | **3**  | I chose the wrong bank, wallet, or payout method      |
+
+        | **4**  | I entered the wrong amount                            |
+
+        | **5**  | I no longer need to send this transfer                |
+
+        | **6**  | The recipient no longer needs the money               |
+
+        | **7**  | This is a duplicate transfer                          |
+
+        | **8**  | The transfer is taking too long                       |
+
+        | **9**  | I will send the money using a different method        |
+
+        | **11** | Fees or exchange rate are not acceptable              |
+
+        | **12** | I created this transaction by mistake (test or trial) |
+
+        | **13** | Other reason (please specify)                         |
+
+
+        ---
+
+
+        '
+      tags:
+      - APIs/Link/Transactions
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: false
+        example: application/json
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                remitter_reference_no:
+                  type: string
+                reason:
+                  type: integer
+                other_reason:
+                  type: string
+              required:
+              - remitter_reference_no
+              - reason
+              x-apidog-orders:
+              - remitter_reference_no
+              - reason
+              - other_reason
+            example:
+              remitter_reference_no: BALADLINK-XXXXXXXXXX
+              reason: 1
+              other_reason: ''
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      remitter_reference_no:
+                        type: string
+                      transaction_status_code:
+                        type: integer
+                      transaction_status_description:
+                        type: string
+                    required:
+                    - remitter_reference_no
+                    - transaction_status_code
+                    - transaction_status_description
+                    x-apidog-orders:
+                    - remitter_reference_no
+                    - transaction_status_code
+                    - transaction_status_description
+                  errors:
+                    type: 'null'
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              examples:
+                '1':
+                  summary: Under Cancellation
+                  value:
+                    data:
+                      remitter_reference_no: BALADLINK-XXXXXXXXXX
+                      transaction_status_code: 22
+                      transaction_status_description: Under Cancellation
+                    errors: null
+                '2':
+                  summary: Instant Cancel
+                  value:
+                    data:
+                      remitter_reference_no: BALADLINK-XXXXXXXXXX
+                      transaction_status_code: 7
+                      transaction_status_description: Canceled
+                    errors: null
+          headers: {}
+          x-apidog-name: Success
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: 'null'
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                        message:
+                          type: string
+                        field:
+                          type: 'null'
+                      x-apidog-orders:
+                      - code
+                      - message
+                      - field
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              example:
+                data: null
+                errors:
+                - code: 113
+                  message: Cancellation Not Available
+                  field: null
+                  additionalInfo: null
+          headers: {}
+          x-apidog-name: Cancellation Not Available
+        x-400:Reference No Not found:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: 'null'
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                        message:
+                          type: string
+                        field:
+                          type: 'null'
+                        additionalInfo:
+                          type: 'null'
+                      x-apidog-orders:
+                      - code
+                      - message
+                      - field
+                      - additionalInfo
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              example:
+                data: null
+                errors:
+                - code: 106
+                  message: Invalid Reference Number
+                  field: null
+                  additionalInfo: null
+          headers: {}
+          x-apidog-name: Reference No Not found
+        x-400:Transaction already canceled:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: 'null'
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                        message:
+                          type: string
+                        field:
+                          type: 'null'
+                        additionalInfo:
+                          type: 'null'
+                      x-apidog-orders:
+                      - code
+                      - message
+                      - field
+                      - additionalInfo
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              example:
+                data: null
+                errors:
+                - code: 169
+                  message: Transaction already canceled before
+                  field: null
+                  additionalInfo: null
+          headers: {}
+          x-apidog-name: Transaction already canceled
+      security:
+      - Balad Token: []
+        x-apidog:
+          required: true
+          schemeGroups:
+          - id: 87aTaQp8pR3_G2Uh_UKds
+            schemeIds:
+            - Balad Token
+          use:
+            id: 87aTaQp8pR3_G2Uh_UKds
+      x-apidog-folder: APIs/Link/Transactions
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-20919919-run
+  /remit-api/v1/transactions:
+    post:
+      summary: Create transaction
+      deprecated: false
+      description: "This endpoint is used to **initiate a money transfer transaction** through Balad’s Collection API.  \nIt supports multiple transaction types (Cash, Card, Bank Account and Wallet) and requires sender, receiver, and transaction details to be passed in the request body.  \n\n ---\n\n<AccordionGroup>\n  <Accordion title=\"Sender Details\" defaultOpen>\n\n| **Parameter** | **Remarks** |\n| --- | --- |\n| sender_first_name | First or full legal name. Must match valid ID. Could be sender first name only or sender full name (Full Name must be the full legal name of the sender and must exactly match the name as it appears on the sender's valid ID.) |\n| sender_middle_name | Middle name. Same character rules as first name. |\n| sender_last_name | Last name. Same character rules as first name. |\n| sender_address | Full sender address. |\n| sender_dateofbirth | Format: `DD-MMM-YYYY`. Example: `01-JUN-2020`. |\n| sender_contact_no | Contact number. |\n| sender_identity | Identity type: 1 = Passport, 2 = Government-issued ID. |\n| sender_identity_no | ID/Passport number. Allowed: periods (.), commas (,), underscores (_), hyphens (-), space ( ). |\n| sender_identity_expiry_date | ID Expiry Date. Format: `DD-MMM-YYYY`. Must not be expired. |\n| sender_nationality | ISO alpha-2 country code (e.g., `US`, `EG`). |\n| sender_country_code | ISO alpha-2 country code of residence. |\n| sender_country_of_birth | Country of birth, valid country string (e.g., `Egypt`, `United States of America`). |\n| sender_gender | 1 = Male, 2 = Female. |\n\n  </Accordion>\n\n  <Accordion title=\"Receiver Details\">\n\n  | **Parameter** | **Remarks** |\n  | --- | --- |\n  | receiver_first_name | First or full legal name in English. Must match valid ID. |\n  | receiver_middle_name | Middle name. Same character rules as first name. |\n  | receiver_last_name | Last name. Same character rules as first name.|\n  | receiver_address | Required in some cases (e.g., Account transfer in USD except bank code `BDC`). |\n  | receiver_contact_no | Valid phone number. Egyptian format supported. In case of cash, if provided the receiver will receive SMS with transaction details on this number Examples: `+20101111145`, `020101111145`, `01011111145`. |\n  | receiver_identity_type | Identity type: 1 = Passport, 2 = Government-issued ID (default 2 if not sent). |\n  | receiver_identity_no | ID/Passport number. Allowed: periods (.), commas (,), underscores (_), hyphens (-), space ( ). |\n  | receiver_gender | 1 = Male, 2 = Female. |\n\n  </Accordion>\n\n  <Accordion title=\"Transaction Details\">\n\n  | **Parameter** | **Remarks** |\n  | --- | --- |\n  | transaction_type | 1 = Cash, 2 = Account Credit, 3 = Wallet, 4 = Card. |\n  | remitter_reference_no | Unique agent reference. Allowed: A–Z, a–z, 0–9, dash (-). |\n  | sending_currency_code | ISO 4217 currency code. Examples: `EGP`, `USD`. |\n  | amount | Amount with up to 2 decimals. Example: `2500.50`. |\n  | account_no | Account/Wallet/Card number. Rules: <br>• 16 digits for card <br>• 11 digits for wallet (Egyptian phone number format) <br>Examples: `+201055555333`, `01055555333`. <br>• IBAN for USD bank transfers <br>• Required in case transaction type 'Cash' and bank code 'POST'  |\n  | receiver_bank_code | Bank code (e.g., `BDC`, `POST`). Required in some cases. [Banks List](https://developers.balad.tech/banks-list-20919916e0.md) |\n  | source_of_remittance | Source code of transaction. List available via sources endpoint. [Sources List](https://developers.balad.tech/sources-list-20919915e0.md) |\n  | purpose | Purpose code of transaction. List available via purposes endpoint. [Purposes List](https://developers.balad.tech/purposes-list-20919914e0.md)|\n  | value_date | Format: `DD-MMM-YYYY`. Example: `01-JUN-2020`. Must be today or later. |\n  | business_model_type | Business model: 1 = C2C (default)|\n\n  </Accordion>\n</AccordionGroup>\n\n\n## Required Fields \n\n| Field                     | Cash Pickup (`1`) | Bank Account (`2`) | Wallet (`3`) |\n|---------------------------|-------------------|--------------------|--------------|\n| **transaction_type**      | ✅                | ✅                 | ✅           |\n| **remitter_reference_no** | ✅                | ✅                 | ✅           |\n| **sender_first_name**     | ✅                | ✅                 | ✅           |\n| **sender_last_name**      | ✅                | ✅                 | ❌           |\n| **sender_address**        | ✅                | ✅                 | ✅           |\n| **sender_dateofbirth**    | ✅                | ✅                 | ✅           |\n| **sender_contact_no**    | ❌                | ❌                 | ❌           |\n| **sender_identity (type)**| ❌                | ❌                 | ❌           |\n| **sender_identity_no**    | ❌                | ❌                 | ❌           |\n| **sender_identity_expiry_date**    | ❌                | ❌                 | ❌           |\n| **sender_nationality**    | ✅                | ✅                 | ✅           |\n| **sender_country_code**   | ✅                | ✅                 | ✅           |\n| **receiver_first_name**   | ✅                | ✅                 | ✅           |\n| **receiver_last_name**    | ❌                | ❌                 | ❌           |\n| **receiver_address**      | ❌                | ✅                 | ❌           |\n| **receiver_contact_no**   | ✅                | ❌               | ✅           |\n| **receiver_identity_type**  | ❌                | ❌                 | ❌           |\n| **receiver_identity_no**  | ❌                | ❌                | ❌           |\n| **receiver_gender**  | ❌                | ❌                | ❌           |\n| **receiver_relationship**  | ❌                | ❌                | ❌           |\n| **account_no**            | ❌               | ✅                 | ✅           |\n| **receiver_bank_code**    | ✅                | ✅                 | ❌           |\n| **sending_currency_code** | ✅                | ✅                 | ✅           |\n| **amount**                | ✅                | ✅                 | ✅           |\n| **source_of_remittance**               | ❌                | ❌                 | ❌           |\n| **purpose**               | ✅                | ✅                 | ✅           |\n| **value_date**            | ❌                | ❌                 | ❌           |\n| **business_model_type**   | ❌                | ❌                 | ❌           |\n\n---   \n\n"
+      tags:
+      - APIs/Link/Transactions
+      parameters:
+      - name: X-Country-Code
+        in: header
+        description: ''
+        required: false
+        example: ''
+        schema:
+          type: string
+      - name: X-IV-Key
+        in: header
+        description: ''
+        required: false
+        example: ''
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: ''
+        required: false
+        example: application/json
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transaction_type:
+                  type: integer
+                  description: 'Transaction type: 1=Cash, 2=Account Credit, 3=Wallet, 4=Card'
+                  enum:
+                  - 1
+                  - 2
+                  - 3
+                  - 4
+                  examples:
+                  - 1
+                  x-apidog-enum:
+                  - value: 1
+                    name: Cash
+                    description: Cash payout at agent location
+                  - value: 2
+                    name: Account
+                    description: Direct credit to bank account
+                  - value: 3
+                    name: Wallet
+                    description: Credit to mobile wallet
+                  - value: 4
+                    name: Card
+                    description: Credit to debit/credit card
+                remitter_reference_no:
+                  type: string
+                  maxLength: 50
+                  pattern: ^[A-Za-z0-9-]+$
+                  description: Unique transaction reference number assigned by the sending agent
+                  examples:
+                  - TXN-20230901
+                sender_first_name:
+                  type: string
+                  maxLength: 50
+                  description: Sender first name or full name
+                  examples:
+                  - Mohamed
+                sender_middle_name:
+                  type: string
+                  maxLength: 50
+                  description: Sender middle name (optional)
+                  examples:
+                  - Ahmed
+                sender_last_name:
+                  type: string
+                  maxLength: 50
+                  description: Sender last name (required if first name is not full name)
+                  examples:
+                  - Hassan
+                sender_address:
+                  type: string
+                  description: Full residential address of sender
+                  maxLength: 200
+                  examples:
+                  - 123 Nile Street, Cairo
+                sender_dateofbirth:
+                  type: string
+                  pattern: ^\d{2}-[A-Z]{3}-\d{4}$
+                  description: Sender date of birth in DD-MMM-YYYY format
+                  examples:
+                  - 01-JUN-1990
+                sender_contact_no:
+                  type: string
+                  maxLength: 20
+                  description: Sender contact number
+                  examples:
+                  - '+201011111145'
+                sender_identity:
+                  type: integer
+                  enum:
+                  - 1
+                  - 2
+                  description: 'Sender ID type: 1=Passport, 2=Government ID'
+                  examples:
+                  - 2
+                  x-apidog-enum:
+                  - value: 1
+                    name: Passport
+                  - value: 2
+                    name: Government ID
+                sender_identity_no:
+                  type: string
+                  description: Sender ID number
+                  maxLength: 50
+                  examples:
+                  - '29804151502123'
+                sender_identity_expiry_date:
+                  type: string
+                  pattern: ^\d{2}-[A-Z]{3}-\d{4}$
+                  description: Expiry date of ID (optional, DD-MMM-YYYY format)
+                  examples:
+                  - 01-JUN-2030
+                sender_nationality:
+                  type: string
+                  maxLength: 2
+                  description: Sender nationality (ISO 3166-1 alpha-2)
+                  examples:
+                  - EG
+                sender_country_code:
+                  type: string
+                  maxLength: 2
+                  description: Country code of sender's residence (ISO 3166-1 alpha-2)
+                  examples:
+                  - EG
+                sender_country_of_birth:
+                  type: string
+                  maxLength: 100
+                  description: Sender country of birth (optional)
+                  examples:
+                  - Egypt
+                sender_gender:
+                  type: integer
+                  enum:
+                  - 1
+                  - 2
+                  description: 'Sender gender: 1=Male, 2=Female'
+                  examples:
+                  - 1
+                  x-apidog-enum:
+                  - value: 1
+                    name: Male
+                  - value: 2
+                    name: Female
+                receiver_first_name:
+                  type: string
+                  maxLength: 50
+                  description: Receiver first name or full name (English only)
+                  examples:
+                  - John
+                receiver_middle_name:
+                  type: string
+                  maxLength: 50
+                  description: Receiver middle name (optional)
+                  examples:
+                  - Michael
+                receiver_last_name:
+                  type: string
+                  maxLength: 50
+                  description: Receiver last name (optional if full name in first_name)
+                  examples:
+                  - Smith
+                receiver_address:
+                  type: string
+                  description: Receiver residential address (mandatory for Account/Card, optional for Cash/Wallet)
+                  maxLength: 200
+                  examples:
+                  - 45 Park Avenue, NY
+                receiver_contact_no:
+                  type: string
+                  maxLength: 20
+                  description: Receiver contact number (mandatory for Wallet/Card, optional for Cash/Account)
+                  examples:
+                  - '+201011111145'
+                receiver_identity_type:
+                  type: integer
+                  enum:
+                  - 1
+                  - 2
+                  description: Receiver ID type (mandatory for Cash payout). 1=Passport, 2=Government ID
+                  examples:
+                  - 2
+                receiver_identity_no:
+                  type: string
+                  maxLength: 50
+                  description: 'Receiver ID number (mandatory for Cash payout). Government ID: It''s Egyptian National Identity'
+                  examples:
+                  - '29804151502123'
+                receiver_gender:
+                  type: integer
+                  enum:
+                  - 1
+                  - 2
+                  description: Receiver gender (optional)
+                  examples:
+                  - 1
+                receiver_relationship:
+                  type: string
+                  maxLength: 50
+                  description: Relationship of receiver to sender (optional, e.g., BROTHER, MOTHER)
+                  examples:
+                  - BROTHER
+                sending_currency_code:
+                  type: string
+                  maxLength: 3
+                  description: Sending currency ISO 4217 code. The currency beneficiary/receiver will receive money in
+                  examples:
+                  - USD
+                amount:
+                  type: string
+                  description: Transaction amount with up to two decimal places
+                  pattern: ^\d+(\.\d{1,2})?$
+                  examples:
+                  - '2500.50'
+                account_no:
+                  type: string
+                  minLength: 4
+                  maxLength: 29
+                  description: Account/Wallet/Card number (mandatory for Account, Wallet, and Card transfers)
+                  examples:
+                  - '01055555333'
+                receiver_bank_code:
+                  type: string
+                  maxLength: 4
+                  description: Receiver bank code (mandatory for Account transfer if bank is required)
+                  examples:
+                  - BDC
+                source_of_remittance:
+                  type: string
+                  maxLength: 3
+                  description: Source code of transaction funds (optional, ISO/custom code)
+                  examples:
+                  - SAL
+                purpose:
+                  type: string
+                  maxLength: 3
+                  description: Purpose code of transaction (ISO/custom code)
+                  examples:
+                  - FAM
+                value_date:
+                  type: string
+                  pattern: ^\d{2}-[A-Z]{3}-\d{4}$
+                  description: Value date (>= today, optional)
+                  examples:
+                  - 05-SEP-2025
+                business_model_type:
+                  type: integer
+                  enum:
+                  - 1
+                  - 2
+                  description: 'Business model type: 1=C2C (Person-to-Person)'
+                  examples:
+                  - 1
+                  x-apidog-enum:
+                  - value: 1
+                    name: C2C
+                    description: Person-to-Person remittance
+              required:
+              - transaction_type
+              - remitter_reference_no
+              - sender_first_name
+              - sender_last_name
+              - sender_address
+              - sender_dateofbirth
+              - sender_identity
+              - sender_identity_no
+              - sender_nationality
+              - sender_country_code
+              - receiver_first_name
+              - sending_currency_code
+              - amount
+              - purpose
+              x-apidog-orders:
+              - transaction_type
+              - remitter_reference_no
+              - sender_first_name
+              - sender_middle_name
+              - sender_last_name
+              - sender_address
+              - sender_dateofbirth
+              - sender_contact_no
+              - sender_identity
+              - sender_identity_no
+              - sender_identity_expiry_date
+              - sender_nationality
+              - sender_country_code
+              - sender_country_of_birth
+              - sender_gender
+              - receiver_first_name
+              - receiver_middle_name
+              - receiver_last_name
+              - receiver_address
+              - receiver_contact_no
+              - receiver_identity_type
+              - receiver_identity_no
+              - receiver_gender
+              - receiver_relationship
+              - sending_currency_code
+              - amount
+              - account_no
+              - receiver_bank_code
+              - source_of_remittance
+              - purpose
+              - value_date
+              - business_model_type
+            examples:
+              '1':
+                value:
+                  transaction_type: 1
+                  remitter_reference_no: '{{refNo}}'
+                  sender_first_name: SHOHAIB KHAN
+                  sender_last_name: MOHAMMAD
+                  sender_address: KUWAIT ROAD KUWAIT
+                  sender_dateofbirth: 10-May-1980
+                  sender_identity: 2
+                  sender_identity_no: PK12255100
+                  sender_identity_expiry_date: 23-Jul-2027
+                  sender_nationality: EG
+                  sender_country_code: KW
+                  sender_contact_no: '96539053100'
+                  receiver_first_name: Mohammad Faisal Rashid
+                  receiver_last_name: Mustafa
+                  receiver_address: EGYPT
+                  receiver_identity_type: 2
+                  receiver_nationality: EG
+                  receiver_contact_no: '01222222103'
+                  sending_currency_code: EGP
+                  amount: '5800'
+                  account_no: '01234323456'
+                  receiver_bank_code: BDC
+                  source_of_remittance: '001'
+                  purpose: '002'
+                summary: Cash Transaction
+              '2':
+                value:
+                  transaction_type: 2
+                  remitter_reference_no: '{{refNo}}'
+                  sender_first_name: SHOHAIB KHAN
+                  sender_last_name: MOHAMMAD
+                  sender_address: KUWAIT ROAD KUWAIT
+                  sender_dateofbirth: 10-May-1980
+                  sender_identity: 2
+                  sender_identity_no: PK12255100
+                  sender_identity_expiry_date: 23-Jul-2027
+                  sender_nationality: EG
+                  sender_country_code: KW
+                  sender_contact_no: '96539053100'
+                  receiver_first_name: Mohammad Faisal Rashid
+                  receiver_last_name: Mustafa
+                  receiver_address: EGYPT
+                  receiver_nationality: EG
+                  sending_currency_code: EGP
+                  amount: '5800'
+                  account_no: '01234323456'
+                  receiver_bank_code: BDC
+                  source_of_remittance: '001'
+                  purpose: '002'
+                summary: Account Transaction
+              '3':
+                value:
+                  transaction_type: 3
+                  remitter_reference_no: '{{refNo}}'
+                  sender_first_name: SHOHAIB KHAN
+                  sender_last_name: MOHAMMAD
+                  sender_address: KUWAIT ROAD KUWAIT
+                  sender_dateofbirth: 10-May-1980
+                  sender_identity: 2
+                  sender_identity_no: PK12255100
+                  sender_identity_expiry_date: 23-Jul-2027
+                  sender_nationality: EG
+                  sender_country_code: KW
+                  sender_contact_no: '96539053100'
+                  receiver_first_name: Mohammad Faisal Rashid
+                  receiver_last_name: Mustafa
+                  receiver_address: EGYPT
+                  receiver_nationality: EG
+                  receiver_contact_no: '01222222100'
+                  sending_currency_code: EGP
+                  amount: '5800'
+                  account_no: '01234323456'
+                  source_of_remittance: '001'
+                  purpose: '002'
+                summary: Wallet Transaction
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      remitter_reference_no:
+                        type: string
+                      delivery_estimate:
+                        type: string
+                    required:
+                    - remitter_reference_no
+                    - delivery_estimate
+                    x-apidog-orders:
+                    - remitter_reference_no
+                    - delivery_estimate
+                  errors:
+                    type: 'null'
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              examples:
+                '1':
+                  summary: Success
+                  value:
+                    data:
+                      remitter_reference_no: XXXXXXXXXXXXXXXXXXX
+                      delivery_estimate: XXXXXXXXXXXXXXXXXXX
+                    errors: null
+                '2':
+                  summary: Mandatory field is required
+                  value:
+                    data: null
+                    errors:
+                    - code: 10
+                      message: Transaction Type is required
+                      field: transaction_type
+                    - code: 10
+                      message: Remitter Reference No is required
+                      field: remitter_reference_no
+                    - code: 10
+                      message: Sending Currency Code is required
+                      field: sending_currency_code
+                    - code: 10
+                      message: Amount is required
+                      field: amount
+                    - code: 10
+                      message: Account No is required
+                      field: account_no
+                    - code: 10
+                      message: Source Of Remittance is required
+                      field: source_of_remittance
+                    - code: 10
+                      message: Purpose is required
+                      field: purpose
+                    - code: 10
+                      message: Value Date is required
+                      field: value_date
+                    - code: 10
+                      message: Sender First Name is required
+                      field: sender_first_name
+                    - code: 10
+                      message: Sender Address is required
+                      field: sender_address
+                    - code: 10
+                      message: Sender Contact No is required
+                      field: sender_contact_no
+                    - code: 10
+                      message: Sender Email is required
+                      field: sender_email
+                    - code: 10
+                      message: Sender Identity Expiry Date is required
+                      field: sender_identity_expiry_date
+                    - code: 10
+                      message: Sender Nationality is required
+                      field: sender_nationality
+                    - code: 10
+                      message: Sender Contact No is required
+                      field: sender_contact_no
+                    - code: 10
+                      message: Receiver First Name is required
+                      field: receiver_first_name
+                    - code: 10
+                      message: Receiver Address is required
+                      field: receiver_address
+                '3':
+                  summary: Create - Cash Transaction
+                  value:
+                    data:
+                      remitter_reference_no: Same transaction reference number sent in the request
+                      delivery_estimate: Within X Business Days
+                    errors: null
+                '4':
+                  summary: Create - Account credit Transaction
+                  value:
+                    data:
+                      remitter_reference_no: Same transaction reference number sent in the request
+                      delivery_estimate: Within X Business Days
+                    errors: null
+                '5':
+                  summary: Create - Wallet Transaction
+                  value:
+                    data:
+                      remitter_reference_no: Same transaction reference number sent in the request
+                      delivery_estimate: Within X Business Days
+                    errors: null
+          headers: {}
+          x-apidog-name: Success
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: 'null'
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                        message:
+                          type: string
+                        field:
+                          type: string
+                      required:
+                      - code
+                      - message
+                      - field
+                      x-apidog-orders:
+                      - code
+                      - message
+                      - field
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+          headers: {}
+          x-apidog-name: Mandatory field is required
+        x-200:Create - Cash Transaction:
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      remitter_reference_no:
+                        type: string
+                      delivery_estimate:
+                        type: string
+                    required:
+                    - remitter_reference_no
+                    - delivery_estimate
+                    x-apidog-orders:
+                    - remitter_reference_no
+                    - delivery_estimate
+                  errors:
+                    type: 'null'
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+          headers: {}
+          x-apidog-name: Create - Cash Transaction
+        x-200:Create - Account credit Transaction:
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      remitter_reference_no:
+                        type: string
+                      delivery_estimate:
+                        type: string
+                    required:
+                    - remitter_reference_no
+                    - delivery_estimate
+                    x-apidog-orders:
+                    - remitter_reference_no
+                    - delivery_estimate
+                  errors:
+                    type: 'null'
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+          headers: {}
+          x-apidog-name: Create - Account credit Transaction
+        x-200:Create - Wallet Transaction:
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      remitter_reference_no:
+                        type: string
+                      delivery_estimate:
+                        type: string
+                    required:
+                    - remitter_reference_no
+                    - delivery_estimate
+                    x-apidog-orders:
+                    - remitter_reference_no
+                    - delivery_estimate
+                  errors:
+                    type: 'null'
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+          headers: {}
+          x-apidog-name: Create - Wallet Transaction
+      security:
+      - Balad Token: []
+        x-apidog:
+          required: true
+          schemeGroups:
+          - id: AQLH24PRUM3hlhxvZ7vSa
+            schemeIds:
+            - Balad Token
+          use:
+            id: AQLH24PRUM3hlhxvZ7vSa
+      x-apidog-folder: APIs/Link/Transactions
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-20919918-run
+    get:
+      summary: Transactions List
+      deprecated: false
+      description: 'This method provides a list of transactions with the added pagination feature. The pagination feature allows clients to fetch transactions in smaller, manageable chunks, enhancing the efficiency and performance of the request-response cycle.
+
+
+        **Request Params:**
+
+
+        | **SI NO** | **Parameter** | **Length** | **Type** | **Mandatory** | **Remarks** |
+
+        | --- | --- | --- | --- | --- | --- |
+
+        | 1 | from_date | 13 | String | Y | Starting date of the required list (DD-MMM-YYYY) Ex: 01-JUN-2020 |
+
+        | 2 | to_date | 13 | String | Y | End date of the required list (DD-MMM-YYYY) Ex: 01-JUN-2020 |
+
+        | 3 | page_no | 1 or 2 | Integer | Y | Requested page number |
+
+        | 4 | page_size | 1 or 2 | Integer | N | Number of transactions per page Should be 1000 or less |
+
+        | 5 | reference_no | 20 | Integer | N | The reference a number of the transaction to needs to be retreived |
+
+
+        **Response Params:**
+
+
+        | **SI NO** | **Parameter** | **Remarks** |
+
+        | --- | --- | --- |
+
+        | 1 | page_no | Requested page number |
+
+        | 2 | page_size | Number of transactions per page |
+
+        | 3 | total | Total number of pages of the list |
+
+        | 4 | has_next | Indicates if there is more than one page |
+
+        | 5 | date | Date and time of the transaction |
+
+        | 6 | remitter_reference_no | Remitter Reference Number |
+
+        | 7 | bank_reference_no | Bank Reference Number |
+
+        | 8 | type | Transaction type  <br>ex. "AccountCredit" |
+
+        | 9 | sender_name | Sender Name |
+
+        | 10 | receiver_name | Beneficiary Name |
+
+        | 11 | account_no | Beneficiary''s Account Number. |
+
+        | 13 | paid_date | Beneficiary Cash Collected/Account  <br>Deposited Date |
+
+        | 14 | status | Transaction status code and description |
+
+        | 15 | currency_code | Currency Code Passed By Remitter To Balad |
+
+        | 16 | amount | Amount Passed By Remitter To Balad |'
+      tags:
+      - APIs/Link/Transactions
+      parameters:
+      - name: from_date
+        in: query
+        description: 'format: (DD-MMM-YYYY)'
+        required: true
+        example: 15-jul-2023
+        schema:
+          type: string
+      - name: to_date
+        in: query
+        description: 'format: (DD-MMM-YYYY)'
+        required: true
+        example: 31-jul-2023
+        schema:
+          type: string
+      - name: page_no
+        in: query
+        description: ''
+        required: true
+        example: '1'
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: ''
+        required: true
+        example: '10'
+        schema:
+          type: string
+      - name: reference_no
+        in: query
+        description: ''
+        required: true
+        example: ''
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: ''
+        required: false
+        example: application/json
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      page_no:
+                        type: integer
+                      page_size:
+                        type: integer
+                      total:
+                        type: integer
+                      has_next:
+                        type: boolean
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            date:
+                              type: string
+                            remitter_reference_no:
+                              type: string
+                            bank_reference_no:
+                              type: string
+                            type:
+                              type: string
+                            sender_name:
+                              type: string
+                            receiver_name:
+                              type: string
+                            account_number:
+                              type: string
+                            paid_date:
+                              type: string
+                            status:
+                              type: string
+                            status_details:
+                              type: object
+                              properties:
+                                code:
+                                  type: integer
+                                description:
+                                  type: string
+                              required:
+                              - code
+                              - description
+                              x-apidog-orders:
+                              - code
+                              - description
+                            amount:
+                              type: integer
+                            currency_code:
+                              type: string
+                            failing_reason:
+                              type: 'null'
+                          required:
+                          - date
+                          - remitter_reference_no
+                          - bank_reference_no
+                          - type
+                          - sender_name
+                          - receiver_name
+                          - account_number
+                          - paid_date
+                          - status
+                          - status_details
+                          - amount
+                          - currency_code
+                          - failing_reason
+                          x-apidog-orders:
+                          - date
+                          - remitter_reference_no
+                          - bank_reference_no
+                          - type
+                          - sender_name
+                          - receiver_name
+                          - account_number
+                          - paid_date
+                          - status
+                          - status_details
+                          - amount
+                          - currency_code
+                          - failing_reason
+                    required:
+                    - page_no
+                    - page_size
+                    - total
+                    - has_next
+                    - items
+                    x-apidog-orders:
+                    - page_no
+                    - page_size
+                    - total
+                    - has_next
+                    - items
+                  errors:
+                    type: 'null'
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              example:
+                data:
+                  page_no: 1
+                  page_size: 20
+                  total: 3
+                  has_next: false
+                  items:
+                  - date: DD-MMM-YYYY hh:mm AM/PM
+                    remitter_reference_no: BALADLINK-XXXXXXXXXX
+                    bank_reference_no: XXXXXXXXXX
+                    type: AccountCredit
+                    sender_name: XXXXX XXXXX XXXXX
+                    receiver_name: XXXXX XXXXX XXXXX
+                    account_number: XXXXXXXXXX
+                    paid_date: DD-MMM-YYYY
+                    status: Transferred
+                    status_details:
+                      code: 1
+                      description: Transferred
+                    amount: 1
+                    currency_code: EGP
+                    failing_reason: null
+                  - date: DD-MMM-YYYY hh:mm AM/PM
+                    remitter_reference_no: BALADLINK-XXXXXXXXXX
+                    bank_reference_no: XXXXXXXXXX
+                    type: AccountCredit
+                    sender_name: XXXXX XXXXX XXXXX
+                    receiver_name: XXXXX XXXXX XXXXX
+                    account_number: XXXXXXXXXX
+                    paid_date: DD-MMM-YYYY
+                    status: SettledOpenForReturn
+                    status_details:
+                      code: 1
+                      description: Transferred
+                    amount: 1
+                    currency_code: EGP
+                    failing_reason: null
+                  - date: DD-MMM-YYYY hh:mm AM/PM
+                    remitter_reference_no: BALADLINK-XXXXXXXXXX
+                    bank_reference_no: ''
+                    type: Wallet
+                    sender_name: XXXXX XXXXX XXXXX
+                    receiver_name: XXXXX XXXXX XXXXX
+                    account_number: XXXXXXXXXX
+                    paid_date: DD-MMM-YYYY
+                    status: Transferred
+                    status_details:
+                      code: 1
+                      description: Transferred
+                    amount: 1
+                    currency_code: EGP
+                    failing_reason: null
+                errors: null
+          headers: {}
+          x-apidog-name: Success
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: 'null'
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                        message:
+                          type: string
+                      required:
+                      - code
+                      - message
+                      x-apidog-orders:
+                      - code
+                      - message
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              example:
+                data: null
+                errors:
+                - code: 10
+                  message: Invalid From Date.
+                - code: 10
+                  message: Invalid To Date.
+          headers: {}
+          x-apidog-name: Invalid From and To Date
+        x-400:From Date is greater than To Date Copy:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: 'null'
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                        message:
+                          type: string
+                      required:
+                      - code
+                      - message
+                      x-apidog-orders:
+                      - code
+                      - message
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              example:
+                data: null
+                errors:
+                - code: 10
+                  message: From Date should be less than or equal ToDate
+                - code: 10
+                  message: To Date should be greater than or equal from date
+          headers: {}
+          x-apidog-name: From Date is greater than To Date Copy
+        x-400:No Record Found:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: 'null'
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                        message:
+                          type: string
+                      x-apidog-orders:
+                      - code
+                      - message
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              example:
+                data: null
+                errors:
+                - code: 102
+                  message: No Record Found
+          headers: {}
+          x-apidog-name: No Record Found
+        x-400:Date difference cannot be more than 15 days:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: 'null'
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                        message:
+                          type: string
+                      x-apidog-orders:
+                      - code
+                      - message
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              example:
+                data: null
+                errors:
+                - code: 108
+                  message: Date difference cannot be more than 15
+          headers: {}
+          x-apidog-name: Date difference cannot be more than 15 days
+      security:
+      - Balad Token: []
+        x-apidog:
+          required: true
+          schemeGroups:
+          - id: 87aTaQp8pR3_G2Uh_UKds
+            schemeIds:
+            - Balad Token
+          use:
+            id: 87aTaQp8pR3_G2Uh_UKds
+      x-apidog-folder: APIs/Link/Transactions
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-20919921-run
+  /remit-api/v1/transactions/export:
+    get:
+      summary: Export Transactions List
+      deprecated: false
+      description: ''
+      tags:
+      - APIs/Link/Transactions
+      parameters:
+      - name: from_date
+        in: query
+        description: ''
+        required: true
+        example: 01-AUG-2025
+        schema:
+          type: string
+      - name: to_date
+        in: query
+        description: ''
+        required: true
+        example: 31-AUG-2025
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      page_no:
+                        type: integer
+                      page_size:
+                        type: integer
+                      total:
+                        type: integer
+                      has_next:
+                        type: boolean
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            transaction_type:
+                              type: integer
+                            reference_no:
+                              type: string
+                            sender_first_name:
+                              type: string
+                            sender_middle_name:
+                              type: string
+                            sender_last_name:
+                              type: string
+                            sender_address:
+                              type: string
+                            sender_contact_no:
+                              type: string
+                            sender_date_of_birth:
+                              type: string
+                            sender_email:
+                              type: string
+                            sender_identity:
+                              type: integer
+                            sender_identity_no:
+                              type: string
+                            sender_identity_expiry_date:
+                              type: string
+                            sender_nationality:
+                              type: string
+                            sender_country_code:
+                              type: string
+                            sender_country_of_birth:
+                              type: 'null'
+                            receiver_first_name:
+                              type: string
+                            receiver_middle_name:
+                              type: string
+                            receiver_last_name:
+                              type: string
+                            receiver_address:
+                              type: string
+                            receiver_identity_no:
+                              type: string
+                            receiver_contact_no:
+                              type: string
+                            sending_currency_code:
+                              type: string
+                            amount:
+                              type: number
+                            deducted_amount_in_partner_currency:
+                              type: number
+                            exchange_rate:
+                              type: integer
+                            fees:
+                              type: number
+                            fees_currency_code:
+                              type: string
+                            account_no:
+                              type: string
+                            receiver_bank_code:
+                              type: string
+                            source_of_remittance:
+                              type: string
+                            purpose:
+                              type: string
+                            value_date:
+                              type: string
+                            sender_employer_name:
+                              type: string
+                            sender_job_description:
+                              type: string
+                            receiver_employer_name:
+                              type: string
+                            receiver_job_description:
+                              type: string
+                            sender_gender:
+                              type: string
+                            receiver_gender:
+                              type: string
+                            receiver_relationship:
+                              type: 'null'
+                            created_at:
+                              type: string
+                            failure_reason:
+                              type: string
+                            response_status:
+                              type: string
+                            response_status_code:
+                              type: integer
+                            last_update:
+                              type: string
+                          x-apidog-orders:
+                          - id
+                          - transaction_type
+                          - reference_no
+                          - sender_first_name
+                          - sender_middle_name
+                          - sender_last_name
+                          - sender_address
+                          - sender_contact_no
+                          - sender_date_of_birth
+                          - sender_email
+                          - sender_identity
+                          - sender_identity_no
+                          - sender_identity_expiry_date
+                          - sender_nationality
+                          - sender_country_code
+                          - sender_country_of_birth
+                          - receiver_first_name
+                          - receiver_middle_name
+                          - receiver_last_name
+                          - receiver_address
+                          - receiver_identity_no
+                          - receiver_contact_no
+                          - sending_currency_code
+                          - amount
+                          - deducted_amount_in_partner_currency
+                          - exchange_rate
+                          - fees
+                          - fees_currency_code
+                          - account_no
+                          - receiver_bank_code
+                          - source_of_remittance
+                          - purpose
+                          - value_date
+                          - sender_employer_name
+                          - sender_job_description
+                          - receiver_employer_name
+                          - receiver_job_description
+                          - sender_gender
+                          - receiver_gender
+                          - receiver_relationship
+                          - created_at
+                          - failure_reason
+                          - response_status
+                          - response_status_code
+                          - last_update
+                    required:
+                    - page_no
+                    - page_size
+                    - total
+                    - has_next
+                    - items
+                    x-apidog-orders:
+                    - page_no
+                    - page_size
+                    - total
+                    - has_next
+                    - items
+                  errors:
+                    type: 'null'
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              example:
+                data:
+                  page_no: 1
+                  page_size: 1000
+                  total: 1
+                  has_next: false
+                  items:
+                  - id: 1
+                    transaction_type: 2
+                    reference_no: SNC003349444
+                    sender_first_name: MAHAMOUD
+                    sender_middle_name: HAJI
+                    sender_last_name: YUSUF-ADAN
+                    sender_address: SNC
+                    sender_contact_no: '733432008'
+                    sender_date_of_birth: 01-Mar-1979
+                    sender_email: ''
+                    sender_identity: 1
+                    sender_identity_no: '2503599'
+                    sender_identity_expiry_date: 31-Mar-2027
+                    sender_nationality: Somalia
+                    sender_country_code: Yemen
+                    sender_country_of_birth: null
+                    receiver_first_name: sad sdfa d
+                    receiver_middle_name: ''
+                    receiver_last_name: ''
+                    receiver_address: EGYPT
+                    receiver_identity_no: ''
+                    receiver_contact_no: '201032486931'
+                    sending_currency_code: EGP
+                    amount: 540.37
+                    deducted_amount_in_partner_currency: 10.81
+                    exchange_rate: 50
+                    fees: 1.08
+                    fees_currency_code: USD
+                    account_no: '01032323000102'
+                    receiver_bank_code: CIB
+                    source_of_remittance: SALARY
+                    purpose: TRANSFER TO OWN FOREIGN BANK AC
+                    value_date: 29-Apr-2026
+                    sender_employer_name: ''
+                    sender_job_description: ''
+                    receiver_employer_name: ''
+                    receiver_job_description: ''
+                    sender_gender: Male
+                    receiver_gender: Male
+                    receiver_relationship: null
+                    created_at: 20-Aug-2025 09:02 AM
+                    failure_reason: ''
+                    response_status: In Progress
+                    response_status_code: 2
+                    last_update: 20-Aug-2025
+                errors: null
+          headers: {}
+          x-apidog-name: Success
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: 'null'
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                        message:
+                          type: string
+                      required:
+                      - code
+                      - message
+                      x-apidog-orders:
+                      - code
+                      - message
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              example:
+                data: null
+                errors:
+                - code: 10
+                  message: Invalid From Date.
+                - code: 10
+                  message: Invalid To Date.
+          headers: {}
+          x-apidog-name: Bad Request
+      security:
+      - Balad Token: []
+        x-apidog:
+          required: true
+          schemeGroups:
+          - id: 87aTaQp8pR3_G2Uh_UKds
+            schemeIds:
+            - Balad Token
+          use:
+            id: 87aTaQp8pR3_G2Uh_UKds
+      x-apidog-folder: APIs/Link/Transactions
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-21744276-run
+  /remit-api/v2/transactions/{remitter_reference_no}/status:
+    get:
+      summary: Get transaction status V2
+      deprecated: false
+      description: 'This method provides the current status of a transaction.
+
+
+        ## 🧾 Transaction Status Codes
+
+
+        | Transaction Status Code | Description | Meaning |
+
+        | :--- | :--- | :--- |
+
+        | **0** | **Created** | Transaction record is initiated. |
+
+        | **1** | **Transferred** | Funds have been successfully sent to the beneficiary. |
+
+        | **2** | **Bank Processing** | Transaction is currently being processed by the bank. |
+
+        | **4** | **Returned** | Funds have been returned to the remitter. |
+
+        | **7** | **Canceled** | Transaction was canceled by the remitter. |
+
+        | **8** | **Pending** | Awaiting further action (e.g., funding or review). |
+
+        | **9** | **Failed** | General failure during processing. |
+
+        | **11** | **Balad Compliance Suspended** | Transaction flagged for internal compliance review. |
+
+        | **12** | **Balad Compliance Approved** | Compliance review passed. |
+
+        | **13** | **Balad Compliance Rejected** | Transaction rejected by Balad''s compliance team. |
+
+        | **15** | **Bank Rejected** | Transaction rejected by the receiving bank. |
+
+        | **16** | **Bank Compliance Suspended** | Transaction is under review by the bank''s compliance team. |
+
+        | **17** | **Bank Compliance Rejected** | Transaction rejected by the bank''s compliance team. |
+
+        | **19** | **Ready For Pickup** | Transaction is ready for cash pickup. |
+
+        | **20** | **Transferred To ACH** | Transaction passed to a third party for execution. |
+
+        | **21** | **Third Party Rejected** | Transaction rejected by the third party. |
+
+        | **22** | **Under Cancellation** | Transaction is under cancellation. |
+
+
+        ## 🚨 Failure Codes & Messages
+
+
+        | Transaction Status Code | Balad Parent Category | Balad Code | Meaning / UX Message |
+
+        | :--- | :--- | :--- | :--- |
+
+        | **21** | `BEN_BANK_RESTRICTION` | `BEN_BNK_001` | Beneficiary bank is temporarily unavailable. |
+
+        | **21** | `BEN_BANK_RESTRICTION` | `BEN_BNK_002` | Beneficiary account is restricted and cannot receive funds. |
+
+        | **21** | `BEN_BANK_RESTRICTION` | `BEN_BNK_003` | Beneficiary account does not accept EGP. |
+
+        | **21** | `INVALID_ACCOUNT` | `ACC_001` | Incorrect beneficiary account number. |
+
+        | **21** | `INVALID_ACCOUNT` | `ACC_002` | Invalid / inconsistent account details. |
+
+        | **21** | `INVALID_ACCOUNT` | `ACC_003` | Invalid beneficiary wallet number. |
+
+        | **15** | `INVALID_ACCOUNT` | `ACC_004` | Invalid account format / wrong account length. |
+
+        | **13 or 17** | `COMPLIANCE_RESTRICTION` | `CMP_001` | Rejected due to AML / sanctions screening. |
+
+        | **7** | `CANCELLED` | `CNL_001` | Transaction cancelled. |
+
+        | **4** | `RETURNED` | `RTN_001` | Transaction expired and is automatically returned. |
+
+        | **9** | `TECH_FAIL` | `TECH_FAL_001` | Technical issue, transaction processing failed. |
+
+        | **21 or 15 or 4** | `MISC` | `MSC_001` | Generic bank rejection / unspecified error. |
+
+
+        :::tip[Handling MISC Failures]
+
+        **`MSC_001`** is a generic, catch-all failure reason used when a rejection from the bank doesn''t map to a specific, known Balad failure code. We recommend logging these cases and contacting Balad support if they occur frequently.
+
+        :::
+
+        '
+      tags:
+      - APIs/Link/Transactions
+      parameters:
+      - name: remitter_reference_no
+        in: path
+        description: ''
+        required: true
+        example: BALADLINK-XXXXXXXXXXX
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: ''
+        required: false
+        example: application/json
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      remitter_reference_no:
+                        type: string
+                      transaction_status:
+                        type: object
+                        properties:
+                          code:
+                            type: integer
+                          description:
+                            type: string
+                        required:
+                        - code
+                        - description
+                        x-apidog-orders:
+                        - code
+                        - description
+                      failing_reason:
+                        type: string
+                      failure_details:
+                        type: 'null'
+                    required:
+                    - remitter_reference_no
+                    - transaction_status
+                    - failing_reason
+                    - failure_details
+                    x-apidog-orders:
+                    - remitter_reference_no
+                    - transaction_status
+                    - failing_reason
+                    - failure_details
+                  errors:
+                    type: 'null'
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              examples:
+                '1':
+                  summary: Success
+                  value:
+                    data:
+                      remitter_reference_no: Ref-1764071699924
+                      transaction_status:
+                        code: 1
+                        description: Transferred
+                      failing_reason: ''
+                      failure_details: null
+                    errors: null
+                '2':
+                  summary: Success
+                  value:
+                    data:
+                      remitter_reference_no: your-unique-ref
+                      transaction_status:
+                        code: 17
+                        description: Bank Compliance Rejected
+                      failing_reason: ''
+                      failure_details:
+                        category: COMPLIANCE_RESTRICTION
+                        code: CMP_001
+                        message: Rejected due to AML / sanctions screening
+                        additional_info: ''
+                    errors: null
+                '3':
+                  summary: Invalid Remitter Reference No
+                  value:
+                    data: null
+                    errors:
+                    - code: 150
+                      message: Invalid Remitter Reference No.
+          headers: {}
+          x-apidog-name: 'Success: Transferred'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: 'null'
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                        message:
+                          type: string
+                      x-apidog-orders:
+                      - code
+                      - message
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+          headers: {}
+          x-apidog-name: Invalid Remitter Reference No
+        'x-200:Success: Bank Compliance Rejected':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      remitter_reference_no:
+                        type: string
+                      transaction_status:
+                        type: object
+                        properties:
+                          code:
+                            type: integer
+                          description:
+                            type: string
+                        required:
+                        - code
+                        - description
+                        x-apidog-orders:
+                        - code
+                        - description
+                      failing_reason:
+                        type: string
+                      failure_details:
+                        type: object
+                        properties:
+                          category:
+                            type: string
+                          code:
+                            type: string
+                          message:
+                            type: string
+                          additional_info:
+                            type: string
+                        required:
+                        - category
+                        - code
+                        - message
+                        - additional_info
+                        x-apidog-orders:
+                        - category
+                        - code
+                        - message
+                        - additional_info
+                    required:
+                    - remitter_reference_no
+                    - transaction_status
+                    - failure_details
+                    - failing_reason
+                    x-apidog-orders:
+                    - remitter_reference_no
+                    - transaction_status
+                    - failing_reason
+                    - failure_details
+                  errors:
+                    type: 'null'
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+          headers: {}
+          x-apidog-name: 'Success: Bank Compliance Rejected'
+      security:
+      - Balad Token: []
+        x-apidog:
+          required: true
+          schemeGroups:
+          - id: 87aTaQp8pR3_G2Uh_UKds
+            schemeIds:
+            - Balad Token
+          use:
+            id: 87aTaQp8pR3_G2Uh_UKds
+      x-apidog-folder: APIs/Link/Transactions
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-23798903-run
+  /remit-api/v1/transactions/update:
+    post:
+      summary: Update transaction
+      deprecated: false
+      description: "The Update Receiver Info API allows partners to request corrections to receiver information (name and contact number) for an existing transaction. \n\n### Important Notes\n- Updates can only be requested for Cash Transactions and statuses that is **not Final Status**. Check it at [Transaction Lifecycle](https://developers.balad.tech/transaction-lifecycle-v2-1733418m0.md)\n- A support ticket is automatically created for operations team to review and approve the update\n\n## Request Processing Logic\n\n| Transaction Status              | Auto Update | Ticket Created | request_status | request_status_code |\n|---------------------------------|-------------|----------------|----------------|---------------------|\n| Pending                         | Yes         | No             | Updated        | 1                   |\n| Balad Compliance Suspended      | Yes         | No             | Updated        | 1                   |\n| Sent to BDC (Not Final)         | No          | Yes            | In Progress    | 2                   |"
+      tags:
+      - APIs/Link/Transactions
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                remitterReferenceNo:
+                  type: string
+                receiverFirstName:
+                  type: string
+                receiverMiddleName:
+                  type: string
+                receiverLastName:
+                  type: string
+                receiverContactNo:
+                  type: string
+              required:
+              - remitterReferenceNo
+              - receiverFirstName
+              - receiverContactNo
+              x-apidog-orders:
+              - remitterReferenceNo
+              - receiverFirstName
+              - receiverMiddleName
+              - receiverLastName
+              - receiverContactNo
+            example:
+              remitterReferenceNo: TXN-20260115-ABC123
+              receiverFirstName: Ahmed
+              receiverMiddleName: Mohamed
+              receiverLastName: Ali
+              receiverContactNo: '+201234567890'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      request_status:
+                        type: string
+                      request_status_code:
+                        type: integer
+                      remitter_reference_no:
+                        type: string
+                      delivery_estimate:
+                        type: string
+                        nullable: true
+                      bank_reference_no:
+                        type: string
+                        nullable: true
+                    required:
+                    - request_status
+                    - request_status_code
+                    - remitter_reference_no
+                    - delivery_estimate
+                    - bank_reference_no
+                    x-apidog-orders:
+                    - request_status
+                    - request_status_code
+                    - remitter_reference_no
+                    - delivery_estimate
+                    - bank_reference_no
+                  errors:
+                    type: 'null'
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              examples:
+                '1':
+                  summary: Instant Update
+                  value:
+                    data:
+                      request_status: Updated
+                      request_status_code: 1
+                      bank_reference_no: null
+                      remitter_reference_no: XXXXXXXXXXXXXXXXXXX
+                      delivery_estimate: null
+                    errors: null
+                '2':
+                  summary: Manual Approval Update
+                  value:
+                    data:
+                      request_status: In Progress
+                      request_status_code: 2
+                      bank_reference_no: null
+                      remitter_reference_no: XXXXXXXXXXXXXXXXXXX
+                      delivery_estimate: null
+                    errors: null
+          headers: {}
+          x-apidog-name: Success
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: 'null'
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                        message:
+                          type: string
+                        field:
+                          type: 'null'
+                        additional_info:
+                          type: 'null'
+                      x-apidog-orders:
+                      - code
+                      - message
+                      - field
+                      - additional_info
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              example:
+                data: null
+                errors:
+                - code: 161
+                  message: Can not update transaction info
+                  field: null
+                  additional_info: null
+          headers: {}
+          x-apidog-name: Cannot update Final Status
+        x-400:Invalid Transaction Type Update:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: 'null'
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                        message:
+                          type: string
+                        field:
+                          type: 'null'
+                        additional_info:
+                          type: 'null'
+                      x-apidog-orders:
+                      - code
+                      - message
+                      - field
+                      - additional_info
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              example:
+                data: null
+                errors:
+                - code: 174
+                  message: Sorry, this transaction type isn’t allowed.
+                  field: null
+                  additional_info: null
+          headers: {}
+          x-apidog-name: Invalid Transaction Type Update
+      security:
+      - bearer: []
+      x-apidog-folder: APIs/Link/Transactions
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-22206972-run
+  /remit-api/v1/transactions/validate-account:
+    post:
+      summary: Validate Account
+      deprecated: false
+      description: This API allows clients to validate bank account numbers and IBANs before initiating transfers. It enforces specific rules based on currency (EGP vs. USD), bank codes, and length requirements.
+      tags:
+      - APIs/Link/Transactions
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - account_no
+              - bank_code
+              - currency
+              properties:
+                account_no:
+                  type: string
+                  description: 'Validation: Standard length >= 4 for EGP; IBAN format for USD.'
+                  minLength: 4
+                  maxLength: 29
+                bank_code:
+                  type: string
+                  description: Must be a valid registered bank code.
+                currency:
+                  type: string
+                  enum:
+                  - EGP
+                  - USD
+              x-apidog-orders:
+              - account_no
+              - bank_code
+              - currency
+            example:
+              account_no: '78153237676595'
+              bank_code: SCB
+              currency: EGP
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: 'null'
+                  errors:
+                    type: 'null'
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              example:
+                data: null
+                errors: null
+          headers: {}
+          x-apidog-name: Valid Account Sucess
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: 'null'
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                        message:
+                          type: string
+                        field:
+                          type: string
+                        additionalInfo:
+                          type: string
+                      x-apidog-orders:
+                      - code
+                      - message
+                      - field
+                      - additionalInfo
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              example:
+                data: null
+                errors:
+                - code: 10
+                  message: Invalid Input
+                  field: account_no
+                  additionalInfo: Invalid Egyptian IBAN format. Please enter a valid IBAN.
+          headers: {}
+          x-apidog-name: Invalid IBAN
+      security:
+      - Balad Token: []
+        x-apidog:
+          required: true
+          schemeGroups:
+          - id: yZFVPsbW6ly_WiinOrCGO
+            schemeIds:
+            - Balad Token
+          use:
+            id: yZFVPsbW6ly_WiinOrCGO
+      x-apidog-folder: APIs/Link/Transactions
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-28115248-run
+components:
+  securitySchemes:
+    Balad Token:
+      type: bearer
+      scheme: bearer
+    bearer:
+      type: http
+      scheme: bearer

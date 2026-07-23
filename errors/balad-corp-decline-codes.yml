@@ -1,0 +1,26 @@
+generated: '2026-07-18'
+method: searched
+source: https://developers.balad.tech/error-codes-1667454m0.md
+docs:
+  transaction_lifecycle: https://developers.balad.tech/transaction-lifecycle-v2-1733418m0.md
+  webhook_payload: https://developers.balad.tech/link-transaction-statusupdatev2-1733482m0.md
+# Balad is a cross-border payout provider. Transaction-level rejections/declines surface as a
+# failureDetails object on the Get Transaction Status V2 endpoint and the StatusUpdateV2 webhook.
+envelope:
+  location: failureDetails object (on status responses and StatusUpdateV2 webhook)
+  fields:
+    category: High-level parent rejection category (e.g. COMPLIANCE_RESTRICTION)
+    code: Specific Balad rejection/decline code (e.g. CMP_001)
+    message: User-friendly explanation
+    additionalInfo: Supplemental information
+decline_codes:
+  - {code: TECH_FAL_001, category: TECH_FAIL, meaning: Technical issue, transaction processing failed, terminal_status: Failed, action: Retry the transaction}
+  - {code: CMP_001, category: COMPLIANCE_RESTRICTION, meaning: Rejected due to AML / sanctions screening, terminal_status: Bank/Balad Compliance Rejected, action: Review sender/receiver KYC; contact support}
+  - {code: BEN_BNK_001, category: BEN_BANK_RESTRICTION, meaning: Beneficiary bank is temporarily unavailable, terminal_status: Third Party Rejected, action: Retry later or use another route}
+  - {code: ACC_004, category: INVALID_ACCOUNT, meaning: Invalid account format / wrong account length, terminal_status: Bank Rejected, action: Correct the receiver account number}
+  - {code: MSC_001, category: MISC, meaning: Generic bank rejection / unspecified error, terminal_status: Bank Rejected, action: Contact support with the reference number}
+  - {code: RTN_001, category: RETURNED, meaning: Transaction expired and is automatically returned, terminal_status: Returned, action: Recreate the transaction if still needed}
+  - {code: CNL_001, category: CANCELLED, meaning: Transaction cancelled, terminal_status: Canceled, action: None}
+notes:
+  masking: Failure category and message are surfaced to partners via failureDetails; buyer-facing masking is at the partner's discretion.
+  sandbox_triggers: These decline codes are reproducible in sandbox via account_no / receiver_contact_no suffixes and the "Ahmed Hassan" compliance trigger (see sandbox/balad-corp-sandbox.yml).

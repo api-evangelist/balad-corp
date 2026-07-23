@@ -1,0 +1,45 @@
+generated: '2026-07-18'
+method: searched
+source: https://developers.balad.tech/sandbox-testing-guide-1459818m0.md
+overview: >-
+  Balad provides a dedicated sandbox environment. Sandbox responses are predefined and do not
+  impact real balances. No IP/webhook whitelisting is required in sandbox (unlike production).
+  Test outcomes are driven by "magic suffixes" on specific request fields and magic names.
+test_vs_live:
+  base_url: Provided per-partner during onboarding (sandbox and production hosts are not public)
+  whitelisting: Not required in sandbox; required in production (static IP + webhook URL)
+magic_values:
+  account_wallet_flows:
+    field: account_no
+    note: Apply the suffix to account_no. Unlisted suffixes follow the Default (success) flow.
+    suffixes:
+      - {suffix: default, flow: Created -> Bank Processing -> Transferred, outcome: success}
+      - {suffix: '101', flow: Created -> Failed, failure_category: TECH_FAIL, failure_code: TECH_FAL_001}
+      - {suffix: '102', flow: Created -> Bank Processing -> Bank Compliance Suspended -> Bank Compliance Rejected, failure_category: COMPLIANCE_RESTRICTION, failure_code: CMP_001}
+      - {suffix: '103', flow: Created -> Bank Processing -> Bank Compliance Suspended -> Transferred, outcome: success-after-hold}
+      - {suffix: '104', flow: Created -> Bank Processing -> Transferred To ACH -> Third Party Rejected, failure_category: BEN_BANK_RESTRICTION, failure_code: BEN_BNK_001}
+      - {suffix: '105', flow: Created -> Bank Processing -> Transferred To ACH -> Transferred, outcome: success}
+      - {suffix: '106', flow: Created -> Bank Processing -> Bank Rejected, failure_category: INVALID_ACCOUNT, failure_code: ACC_004}
+      - {suffix: '107', flow: Created -> Bank Processing -> Bank Rejected, failure_category: MISC, failure_code: MSC_001}
+  cash_flows:
+    field: receiver_contact_no
+    note: Apply the suffix to receiver_contact_no. Unlisted suffixes follow the Default (success) flow.
+    suffixes:
+      - {suffix: default, flow: Created -> Bank Processing -> Ready for Pickup -> Transferred, outcome: success}
+      - {suffix: '101', flow: Created -> Failed, failure_category: TECH_FAIL, failure_code: TECH_FAL_001}
+      - {suffix: '102', flow: Created -> Bank Processing -> Bank Compliance Suspended -> Bank Compliance Rejected, failure_category: COMPLIANCE_RESTRICTION, failure_code: CMP_001}
+      - {suffix: '103', flow: Created -> Bank Processing -> Bank Compliance Suspended -> Ready For Pickup -> Transferred, outcome: success-after-hold}
+      - {suffix: '104', flow: Created -> Bank Processing -> Ready for Pickup -> Returned, failure_category: RETURNED, failure_code: RTN_001}
+      - {suffix: '105', flow: Created -> Bank Processing -> Ready for Pickup -> Canceled, failure_category: CANCELLED, failure_code: CNL_001}
+  compliance_review_trigger:
+    fields: [sender_first_name, receiver_first_name]
+    value: Ahmed Hassan
+    effect: Transaction enters Balad Compliance Suspended and awaits manual approval/rejection in the Dashboard.
+  invalid_account_trigger:
+    bank_code: CIB
+    condition: account_no with an invalid length (e.g. 3 digits)
+    effect: Returns validation error code 10 (Invalid Input) on field account_no.
+    default_behavior: By default sandbox accepts any account number format without validation.
+notes:
+  balances: Sandbox does not affect real balances; responses are predefined.
+  simulation_controls: Compliance approval/rejection is simulated via the Balad Dashboard.

@@ -1,0 +1,30 @@
+generated: '2026-07-18'
+method: derived
+status: candidate
+source: openapi/balad-corp-gateway-openapi.yml
+note: >-
+  Balad publishes no official hosted/remote MCP server. This is a CANDIDATE tool list derived
+  one-per-operation from the harvested Balad Gateway OpenAPI, for a future MCP wrapper.
+server:
+  name: balad-corp
+  transport: http
+tools:
+  - {name: get_token, description: Obtain an OAuth2 client-credentials access token, source_operation: 'POST /identity/v1/token'}
+  - {name: get_exchange_rates, description: Get current exchange rates for a service, source_operation: 'GET /core/services/{serviceId}/exchange-rates'}
+  - {name: get_balance, description: Retrieve current balance for a service, source_operation: 'GET /core/v1/services/{service_id}/balance'}
+  - {name: generate_secret, description: Generate a new client secret, source_operation: 'POST /core/v1/developer/secrets'}
+  - {name: delete_secret, description: Delete a client secret, source_operation: 'POST /core/v1/developer/secrets/delete'}
+  - {name: list_secrets, description: List client secrets, source_operation: 'GET /core/v1/developer/secrets'}
+  - {name: list_purposes, description: List available purpose codes, source_operation: 'GET /remit-api/v1/lookups/purposes'}
+  - {name: list_sources, description: List available sources of funds, source_operation: 'GET /remit-api/v1/lookups/sources'}
+  - {name: list_banks, description: List available banks (filter by type/country), source_operation: 'GET /remit-api/banks'}
+  - {name: list_relations, description: List receiver relationships, source_operation: 'GET /remit-api/v1/lookups/relationships'}
+  - {name: create_transaction, description: Initiate a money-transfer transaction, source_operation: 'POST /remit-api/v1/transactions'}
+  - {name: update_transaction, description: Update receiver info on a transaction, source_operation: 'POST /remit-api/v1/transactions/update'}
+  - {name: cancel_transaction, description: Cancel an in-progress transaction, source_operation: 'POST /remit-api/v1/transactions/cancel'}
+  - {name: get_transaction_status, description: Get current transaction status (V2), source_operation: 'GET /remit-api/v2/transactions/{remitter_reference_no}/status'}
+  - {name: list_transactions, description: List transactions (paginated), source_operation: 'GET /remit-api/v1/transactions'}
+  - {name: export_transactions, description: Export the transactions list, source_operation: 'GET /remit-api/v1/transactions/export'}
+  - {name: calculate_receiving_amount, description: Calculate receiving amount from sending amount, source_operation: 'POST /remit-api/v1/transactions/calculate-receiving-amount'}
+  - {name: validate_account, description: Validate a bank account number / IBAN, source_operation: 'POST /remit-api/v1/transactions/validate-account'}
+  - {name: get_reconciliation, description: Fetch reconciliation details (opening/closing balances + history), source_operation: 'GET /remit-api/v1/reconciliation'}

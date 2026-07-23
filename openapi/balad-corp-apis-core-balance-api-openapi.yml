@@ -1,0 +1,96 @@
+openapi: 3.0.1
+info:
+  title: Balad Gateway APIs/Authentication APIs/Core/Balance API
+  description: Balad Gateway APIs — a suite of RESTful endpoints for secure inward cross-border remittances and payouts into Egypt (bank transfers, mobile wallets, cash pickup). Covers authentication, exchange rates, balance, secrets management, lookups, and the full transaction lifecycle. Assembled by API Evangelist from the provider's per-operation OpenAPI fragments published on developers.balad.tech.
+  version: 1.0.0
+  contact:
+    name: Balad Support
+    email: support@balad.me
+    url: https://developers.balad.tech/
+servers: []
+tags:
+- name: APIs/Core/Balance
+paths:
+  /core/v1/services/{service_id}/balance:
+    get:
+      summary: Get Current Balance
+      deprecated: false
+      description: 'The endpoint retrieves the balance information for a specific service identified by the `service_id`.
+
+        '
+      tags:
+      - APIs/Core/Balance
+      parameters:
+      - name: service_id
+        in: path
+        description: 1 = Balad Link, 2 = Balad Money, 3 = Balad Bills, 4 = Balad Collection, 5 = Balad VAS
+        required: true
+        example: '1'
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: ''
+        required: false
+        example: application/json
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        balance:
+                          type: integer
+                        balance_date:
+                          type: string
+                        currency_description:
+                          type: string
+                      required:
+                      - balance
+                      - balance_date
+                      - currency_description
+                      x-apidog-orders:
+                      - balance
+                      - balance_date
+                      - currency_description
+                  errors:
+                    type: 'null'
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              example:
+                data:
+                - balance: 500
+                  balance_date: 10-Sep-2025 10:00 AM
+                  currency_description: QAR
+                - balance: 800
+                  balance_date: 30-Jul-2024 10:55 AM
+                  currency_description: EUR
+                errors: null
+          headers: {}
+          x-apidog-name: Success
+      security:
+      - bearer: []
+      x-apidog-folder: APIs/Core/Balance
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-20919909-run
+components:
+  securitySchemes:
+    Balad Token:
+      type: bearer
+      scheme: bearer
+    bearer:
+      type: http
+      scheme: bearer

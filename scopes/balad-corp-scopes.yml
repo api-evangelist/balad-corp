@@ -1,0 +1,24 @@
+generated: '2026-07-18'
+method: searched
+source: https://developers.balad.tech/authorization-1459814m0.md
+docs: https://developers.balad.tech/authorization-1459814m0.md
+schemes:
+  - name: OAuth2ClientCredentials
+    flow: clientCredentials
+    tokenUrl: /identity/v1/token
+    source: openapi/balad-corp-gateway-openapi.yml
+# Balad documents that access tokens are "scoped to specific APIs" and returns a `scope`
+# claim on the token response, but does NOT publish an enumerated scope/permission reference.
+# The product-area scope groups below are the granularity Balad names in its docs; individual
+# scope string values are not published and are therefore NOT invented here.
+scope_groups:
+  - name: remittances
+    description: Balad Link money-transfer / payout APIs (create, cancel, status, reconciliation).
+  - name: collections
+    description: Collection / invoice APIs (referenced in docs; not enabled for all partners).
+  - name: bills
+    description: Bill payment APIs (billers, providers, bill payments).
+  - name: vouchers
+    description: Voucher APIs (referenced in docs).
+scopes: []
+notes: Enumerated scope values are not published by Balad; only product-area scoping is documented.

@@ -1,0 +1,53 @@
+generated: '2026-07-18'
+method: searched
+source: https://developers.balad.tech/responses-1459816m0.md
+docs:
+  responses: https://developers.balad.tech/responses-1459816m0.md
+  authorization: https://developers.balad.tech/authorization-1459814m0.md
+  webhooks: https://developers.balad.tech/webhooks.md
+  error_codes: https://developers.balad.tech/error-codes-1667454m0.md
+authentication:
+  style: oauth2-client-credentials
+  header: 'Authorization: Bearer <ACCESS_TOKEN>'
+  token_endpoint: /identity/v1/token
+  ref: authentication/balad-corp-authentication.yml
+response_envelope:
+  shape: '{ "data": <object|null>, "errors": <object|array|null> }'
+  success: data is populated, errors is null
+  error: data is null, errors carries code/message/field(/additional_info)
+  ref: errors/balad-corp-error-codes.yml
+idempotency:
+  supported: true
+  mechanism: client-supplied-reference
+  field: remitter_reference_no
+  behavior: >-
+    Each transaction is created with a partner-supplied unique remitter_reference_no.
+    Submitting a duplicate reference is rejected with error code 129 (Duplicate reference),
+    so the reference acts as an idempotency/deduplication key for Create Transaction.
+  no_dedicated_header: true
+  note: Balad does not expose a dedicated Idempotency-Key header; dedup is via remitter_reference_no.
+pagination:
+  style: page-number
+  request_params: [page_no, page_size]
+  max_page_size: 50
+  response_fields: [page_no, page_size, has_next, items]
+  applies_to: [Transactions List]
+versioning:
+  scheme: uri-path
+  observed_versions: [v1, v2]
+  examples:
+    - /identity/v1/token
+    - /remit-api/v1/transactions
+    - /remit-api/v2/transactions/{remitter_reference_no}/status
+  ref: lifecycle/balad-corp-lifecycle.yml
+webhook_signing:
+  header: X-HMAC-SIGNATURE
+  algorithm: HMAC-SHA256 over the minified JSON payload using the Webhook Secret
+  user_agent: Balad Egypt
+  secret_length: 32
+  ref: asyncapi/balad-corp-webhooks-asyncapi.yml
+rate_limit_signaling:
+  documented: false
+  note: No published rate-limit headers; per-partner limits are configured during onboarding.
+encryption:
+  note: Some flows require payload encryption; error 173/417 indicate encryption misconfiguration.

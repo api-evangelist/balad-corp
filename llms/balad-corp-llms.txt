@@ -1,0 +1,37 @@
+# Title
+
+## Docs
+- [ Balad™ Gateway Documentation 📖](https://developers.balad.tech/-balad-gateway-documentation-1459812m0.md): 
+- [Get Started](https://developers.balad.tech/get-started-1459813m0.md): 
+- [Authorization](https://developers.balad.tech/authorization-1459814m0.md): 
+- [Responses](https://developers.balad.tech/responses-1459816m0.md): 
+- [Go Live!](https://developers.balad.tech/go-live-1460375m0.md): 
+- [FAQs](https://developers.balad.tech/faqs-1613606m0.md): 
+- APIs [Core](https://developers.balad.tech/core.md): 
+- APIs [Link](https://developers.balad.tech/link.md): 
+- APIs > Link [Sandbox Testing Guide](https://developers.balad.tech/sandbox-testing-guide-1459818m0.md): 
+- APIs > Link [Error Codes](https://developers.balad.tech/error-codes-1667454m0.md): 
+- APIs > Link [Transaction Lifecycle V2](https://developers.balad.tech/transaction-lifecycle-v2-1733418m0.md): 
+- [Webhooks](https://developers.balad.tech/webhooks.md): 
+- Webhooks [Link.Transaction.StatusUpdateV2](https://developers.balad.tech/link-transaction-statusupdatev2-1733482m0.md): 
+
+## API Docs
+- APIs > Authentication [Token](https://developers.balad.tech/token-20919907e0.md): ### Request
+- APIs > Core > Exchange rate [Exchange Rates](https://developers.balad.tech/exchange-rates-20919908e0.md): The "Get Exchange Rate" API  retrieves the current exchange rates available for a partner based on a specified service.
+- APIs > Core > Balance [Get Current Balance](https://developers.balad.tech/get-current-balance-20919909e0.md): The endpoint retrieves the balance information for a specific service identified by the `service_id`.
+- APIs > Core > Secrets [Generate Secret](https://developers.balad.tech/generate-secret-20919911e0.md): Generate a new client secret by providing a name and an expiration date.
+- APIs > Core > Secrets [Delete Secret](https://developers.balad.tech/delete-secret-20919912e0.md): Remove an existing client secret using its unique secret ID.
+- APIs > Core > Secrets [Get Secrets](https://developers.balad.tech/get-secrets-20919913e0.md): Retrieve a list of all existing client secrets associated with your account.
+- APIs > Link > Lookups [Purposes List](https://developers.balad.tech/purposes-list-20919914e0.md): This method provides list of available Purpose Codes on the system
+- APIs > Link > Lookups [Sources List](https://developers.balad.tech/sources-list-20919915e0.md): This method provides list of available Source of Funds on the system
+- APIs > Link > Lookups [Banks List](https://developers.balad.tech/banks-list-20919916e0.md): This method retrieves a list of available banks in the system. The list can be filtered based on the **transaction type** and **receiving country** to provide a more refined set of results.
+- APIs > Link > Lookups [Relations](https://developers.balad.tech/relations-20919917e0.md): This method provides list of available receiver relationships on the system.
+- APIs > Link > Transactions [Create transaction](https://developers.balad.tech/create-transaction-20919918e0.md): This endpoint is used to **initiate a money transfer transaction** through Balad’s Collection API.  
+- APIs > Link > Transactions [Update transaction](https://developers.balad.tech/update-transaction-22206972e0.md): The Update Receiver Info API allows partners to request corrections to receiver information (name and contact number) for an existing transaction. 
+- APIs > Link > Transactions [Cancel transaction](https://developers.balad.tech/cancel-transaction-20919919e0.md): This method handles transaction cancellation within the Balad Remit system.
+- APIs > Link > Transactions [Get transaction status V2](https://developers.balad.tech/get-transaction-status-v2-23798903e0.md): This method provides the current status of a transaction.
+- APIs > Link > Transactions [Transactions List](https://developers.balad.tech/transactions-list-20919921e0.md): This method provides a list of transactions with the added pagination feature. The pagination feature allows clients to fetch transactions in smaller, manageable chunks, enhancing the efficiency and performance of the request-response cycle.
+- APIs > Link > Transactions [Export Transactions List](https://developers.balad.tech/export-transactions-list-21744276e0.md): 
+- APIs > Link > Transactions [Calculate receiving amount](https://developers.balad.tech/calculate-receiving-amount-20919923e0.md): This API endpoint calculates and retrieves the receiving amount based on the sending amount. The transaction type is optional; if provided, the API will return the receiving amount in the currency associated with the specified transaction type. If the transaction type is not provided, the API will return the receiving amount for all available currencies.
+- APIs > Link > Transactions [Validate Account](https://developers.balad.tech/validate-account-28115248e0.md): This API allows clients to validate bank account numbers and IBANs before initiating transfers. It enforces specific rules based on currency (EGP vs. USD), bank codes, and length requirements.
+- APIs > Link > Reconciliation [Reconciliation](https://developers.balad.tech/reconciliation-21667941e0.md): Fetch account reconciliation details including opening & closing balances and transaction history.

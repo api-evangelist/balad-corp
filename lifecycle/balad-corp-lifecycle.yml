@@ -1,0 +1,26 @@
+generated: '2026-07-18'
+method: searched
+source: https://developers.balad.tech/get-started-1459813m0.md
+versioning:
+  scheme: uri-path
+  observed_versions: [v1, v2]
+  current: v2 (transaction status); v1 for most Core/Link endpoints
+  examples:
+    - /identity/v1/token
+    - /remit-api/v1/transactions
+    - /remit-api/v2/transactions/{remitter_reference_no}/status
+  notes: V2 introduced a new webhook/status payload with a nested data object and failureDetails.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: >-
+    No formal deprecation/Sunset (RFC 8594) policy published. OpenAPI operations declare
+    deprecated:false. V1 and V2 run side-by-side (transaction status is V2).
+onboarding_gate:
+  go_live_url: https://developers.balad.tech/go-live-1460375m0.md
+  requirements: [designated Admin user, static IP whitelisting, webhook endpoint approval]
+sla:
+  url: null
+  published_uptime: '99.95% (marketing claim on balad.me)'
+status_page: null
+deprecated_operations: []

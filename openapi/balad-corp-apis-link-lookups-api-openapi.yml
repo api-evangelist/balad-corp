@@ -1,0 +1,332 @@
+openapi: 3.0.1
+info:
+  title: Balad Gateway APIs/Authentication APIs/Link/Lookups API
+  description: Balad Gateway APIs — a suite of RESTful endpoints for secure inward cross-border remittances and payouts into Egypt (bank transfers, mobile wallets, cash pickup). Covers authentication, exchange rates, balance, secrets management, lookups, and the full transaction lifecycle. Assembled by API Evangelist from the provider's per-operation OpenAPI fragments published on developers.balad.tech.
+  version: 1.0.0
+  contact:
+    name: Balad Support
+    email: support@balad.me
+    url: https://developers.balad.tech/
+servers: []
+tags:
+- name: APIs/Link/Lookups
+paths:
+  /remit-api/banks:
+    get:
+      summary: Banks List
+      deprecated: false
+      description: "This method retrieves a list of available banks in the system. The list can be filtered based on the **transaction type** and **receiving country** to provide a more refined set of results.\n\n### Filters:\n\n- **Transaction Type**: You can filter the list of banks based on the type of transaction being conducted. The supported transaction types are:\n    \n    1. **Cash**\n        \n    2. **Bank Account**\n        \n    3. **Wallet**\n        \n    4. **Card**"
+      tags:
+      - APIs/Link/Lookups
+      parameters:
+      - name: transaction_type
+        in: query
+        description: ''
+        required: true
+        example: '2'
+        schema:
+          type: string
+      - name: X-Country-Code
+        in: header
+        description: ''
+        required: false
+        example: ''
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: ''
+        required: false
+        example: application/json
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                        description:
+                          type: string
+                        address:
+                          type: string
+                        bic_code:
+                          type: string
+                      required:
+                      - code
+                      - description
+                      - address
+                      - bic_code
+                      x-apidog-orders:
+                      - code
+                      - description
+                      - address
+                      - bic_code
+                  errors:
+                    type: 'null'
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              example:
+                data:
+                - code: XXX
+                  description: BANK 1
+                  address: BANK 1 ADDRESS
+                  bic_code: BANK1EGCXXXX
+                - code: XXXX
+                  description: BANK 2
+                  address: BANK 2 ADDRESS
+                  bic_code: BANK2EGCXXXX
+                errors: null
+          headers: {}
+          x-apidog-name: Success
+      security:
+      - bearer: []
+      x-apidog-folder: APIs/Link/Lookups
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-20919916-run
+  /remit-api/v1/lookups/purposes:
+    get:
+      summary: Purposes List
+      deprecated: false
+      description: This method provides list of available Purpose Codes on the system
+      tags:
+      - APIs/Link/Lookups
+      parameters:
+      - name: X-Country-Code
+        in: header
+        description: ''
+        required: false
+        example: ''
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: ''
+        required: false
+        example: application/json
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                        description:
+                          type: string
+                      required:
+                      - code
+                      - description
+                      x-apidog-orders:
+                      - code
+                      - description
+                  errors:
+                    type: 'null'
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              example:
+                data:
+                - code: XXX
+                  description: PURPOSE 1
+                - code: XXX
+                  description: PURPOSE 2
+                errors: null
+          headers: {}
+          x-apidog-name: Success
+      security:
+      - Balad Token: []
+        x-apidog:
+          required: true
+          schemeGroups:
+          - id: 87aTaQp8pR3_G2Uh_UKds
+            schemeIds:
+            - Balad Token
+          use:
+            id: 87aTaQp8pR3_G2Uh_UKds
+      x-apidog-folder: APIs/Link/Lookups
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-20919914-run
+  /remit-api/v1/lookups/relationships:
+    get:
+      summary: Relations
+      deprecated: false
+      description: This method provides list of available receiver relationships on the system.
+      tags:
+      - APIs/Link/Lookups
+      parameters:
+      - name: X-Country-Code
+        in: header
+        description: ''
+        required: false
+        example: ''
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: ''
+        required: false
+        example: application/json
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                        description:
+                          type: string
+                      required:
+                      - code
+                      - description
+                      x-apidog-orders:
+                      - code
+                      - description
+                  errors:
+                    type: 'null'
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              example:
+                data:
+                - code: XXX
+                  description: RELATIONSHIP 1
+                - code: XXX
+                  description: RELATIONSHIP 2
+                errors: null
+          headers: {}
+          x-apidog-name: Success
+      security:
+      - Balad Token: []
+        x-apidog:
+          required: true
+          schemeGroups:
+          - id: 87aTaQp8pR3_G2Uh_UKds
+            schemeIds:
+            - Balad Token
+          use:
+            id: 87aTaQp8pR3_G2Uh_UKds
+      x-apidog-folder: APIs/Link/Lookups
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-20919917-run
+  /remit-api/v1/lookups/sources:
+    get:
+      summary: Sources List
+      deprecated: false
+      description: This method provides list of available Source of Funds on the system
+      tags:
+      - APIs/Link/Lookups
+      parameters:
+      - name: X-Country-Code
+        in: header
+        description: ''
+        required: false
+        example: ''
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: ''
+        required: false
+        example: application/json
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                        description:
+                          type: string
+                      required:
+                      - code
+                      - description
+                      x-apidog-orders:
+                      - code
+                      - description
+                  errors:
+                    type: 'null'
+                required:
+                - data
+                - errors
+                x-apidog-orders:
+                - data
+                - errors
+              example:
+                data:
+                - code: XXX
+                  description: SOURCE 1
+                - code: XXX
+                  description: SOURCE 2
+                errors: null
+          headers: {}
+          x-apidog-name: Success
+      security:
+      - Balad Token: []
+        x-apidog:
+          required: true
+          schemeGroups:
+          - id: 87aTaQp8pR3_G2Uh_UKds
+            schemeIds:
+            - Balad Token
+          use:
+            id: 87aTaQp8pR3_G2Uh_UKds
+      x-apidog-folder: APIs/Link/Lookups
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-20919915-run
+components:
+  securitySchemes:
+    Balad Token:
+      type: bearer
+      scheme: bearer
+    bearer:
+      type: http
+      scheme: bearer

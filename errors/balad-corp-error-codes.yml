@@ -1,0 +1,43 @@
+generated: '2026-07-18'
+method: searched
+source: https://developers.balad.tech/error-codes-1667454m0.md
+format: custom-envelope
+envelope:
+  shape: '{ "data": null, "errors": [ { "code": <int>, "message": <string>, "field": <string?>, "additional_info": <string?> } ] }'
+  fields:
+    code: Unique numeric error identifier for programmatic handling
+    message: Human-readable error description
+    field: Request field that caused the error (when applicable)
+    additional_info: Extra context to help resolve the issue
+  multiple_errors: On a 4xx with multiple validation failures, errors is an array of per-field entries
+http_status_codes:
+  - {status: 200, meaning: Success}
+  - {status: 400, meaning: Bad Request (input / business validation)}
+  - {status: 401, meaning: Unauthorized}
+  - {status: 403, meaning: Forbidden}
+  - {status: 417, meaning: Encryption Error - verify encryption protocols and keys}
+  - {status: 418, meaning: Configuration Issue - contact administrator}
+  - {status: 500, meaning: Internal Server Error}
+errors:
+  - {code: 10, message: Invalid Input, area: general, action: Fix the field shown in the response}
+  - {code: 14, message: An unexpected error has occurred, area: general, action: Retry, then contact support}
+  - {code: 106, message: Invalid Reference Number, area: cancel/update, action: Verify remitter_reference_no}
+  - {code: 113, message: Cannot cancel completed transactions, area: cancel, action: Check transaction status}
+  - {code: 129, message: Duplicate reference, area: create, action: Use a unique remitter_reference_no (idempotency key)}
+  - {code: 161, message: Cannot update transaction info, area: update, action: Updates only allowed in Created status}
+  - {code: 169, message: Transaction already canceled before, area: cancel, action: No action needed}
+  - {code: 170, message: 'Minimum amount should be greater than or equal {amount}', area: create, action: Increase amount (min 1 USD)}
+  - {code: 171, message: 'Maximum amount should be less than or equal {amount}', area: create, action: Decrease amount}
+  - {code: 172, message: Invalid account number for provided bank code, area: create, action: Verify bank account}
+  - {code: 173, message: Encryption required, area: create, action: Enable encryption}
+  - {code: 174, message: Invalid transaction type, area: create, action: 'Use type 1, 2, or 3'}
+  - {code: 185, message: This currency is not supported on the selected payout route, area: create, action: Change currency or route}
+  - {code: 187, message: 'Max wallet amount is {amount}', area: create, action: Reduce wallet transaction amount}
+  - {code: 188, message: Recipient account daily transaction limit exceeded, area: create, action: Retry next day}
+  - {code: 189, message: Recipient account monthly transaction limit exceeded, area: create, action: Retry next month}
+  - {code: 8033, message: You have exceeded the limit of 5 active secrets allowed, area: secrets, action: Revoke an existing secret first}
+  - {code: 8057, message: Sorry, this currency is not allowed, area: create, action: Use USD or EGP}
+  - {code: 8068, message: Insufficient balance, area: create, action: Pre-fund account}
+notes:
+  duplicate_reference: Code 129 makes remitter_reference_no an effective idempotency key (see conventions).
+  dynamic_amounts: '{amount} tokens in messages are dynamic; read the actual limit from the response.'

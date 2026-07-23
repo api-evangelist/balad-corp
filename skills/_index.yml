@@ -1,0 +1,12 @@
+generated: '2026-07-18'
+method: generated
+api: openapi/balad-corp-gateway-openapi.yml
+skills:
+  - file: balad-corp-create-and-track-payout.md
+    name: Create and track a Balad payout
+    api: openapi/balad-corp-gateway-openapi.yml
+    operations: [getToken, createTransaction, getTransactionStatusV2, cancelTransaction]
+  - file: balad-corp-quote-and-validate.md
+    name: Quote FX and validate a beneficiary before sending
+    api: openapi/balad-corp-gateway-openapi.yml
+    operations: [getToken, getExchangeRates, calculateReceivingAmount, listBanks, validateAccount]
