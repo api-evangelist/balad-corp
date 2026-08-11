@@ -167,7 +167,7 @@ common:
   url: mailto:support@balad.me
 - type: OpenAPI
   name: Balad Gateway API
-  url: openapi/balad-corp-gateway-openapi.yml
+  url: openapi/_original/balad-corp-gateway-openapi.yml
 - type: Authentication
   url: authentication/balad-corp-authentication.yml
 - type: OAuthScopes
