@@ -1,0 +1,43 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Balad Gateway APIs/Authentication APIs/Core/Exchange rate API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "APIs/Core/Exchange rate",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Exchange Rates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/core/services/:serviceId/exchange-rates",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "params": [
+              {
+                "name": "serviceId",
+                "value": "1",
+                "type": "path",
+                "description": "The unique identifier for the service. This parameter specifies the service for which exchange rates are being requested.\n1 = Balad Link, 2 = Balad Money, 3 = Balad Bills, 4 = Balad Collection, 5 = Balad VAS"
+              }
+            ]
+          },
+          "docs": "The \"Get Exchange Rate\" API  retrieves the current exchange rates available for a partner based on a specified service."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,1842 @@
+{
+  "item": [
+    {
+      "id": "91ae44f7-120b-4702-8cd1-527eef42238b",
+      "name": "APIs/Link/Transactions",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "cdb5cece-ef03-40df-8711-3659176028cb",
+          "name": "Calculate receiving amount",
+          "request": {
+            "name": "Calculate receiving amount",
+            "description": {
+              "content": "This API endpoint calculates and retrieves the receiving amount based on the sending amount. The transaction type is optional; if provided, the API will return the receiving amount in the currency associated with the specified transaction type. If the transaction type is not provided, the API will return the receiving amount for all available currencies.\n\n**Request Params**\n\n| **Parameter** | **Type** | **Mandatory** | **Remarks** |\n| --- | --- | --- | --- |\n| amount_usd | Integer | Y | This is the amount being sent and needs to be used for calculating the corresponding receiving amount. |\n| transaction_type | Integer | N | The transaction type  <br>1- Cash  <br>2 - Account Credit  <br>3 - Wallet  <br>4 -Credit/Debit Card |\n\n**Response Params**\n\n| **SI No** | **Parameter** | **Remarks** |\n| --- | --- | --- |\n| 1 | currency_code | the receiving currency |\n| 2 | amount | the receiving amount |",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "remit-api",
+                "v1",
+                "transactions",
+                "calculate-receiving-amount"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f19d980a-a696-4b9d-938d-e32a66cfd4af",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions",
+                    "calculate-receiving-amount"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"amount_usd\":XXXX,\r\n    \"transaction_type\":X\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"{\\r\\n    \\\"data\\\": [\\r\\n        {\\r\\n            \\\"currency_code\\\": \\\"EGP\\\",\\r\\n            \\\"amount\\\":XXX\\r\\n        },\\r\\n        {\\r\\n            \\\"currency_code\\\": \\\"USD\\\",\\r\\n            \\\"amount\\\":XXX\\r\\n        }\\r\\n    ],\\r\\n    \\\"errors\\\": null\\r\\n}\\r\\n\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f271906a-13b2-4309-b51a-2ddb5cc20be1",
+          "name": "Cancel transaction",
+          "request": {
+            "name": "Cancel transaction",
+            "description": {
+              "content": "This method handles transaction cancellation within the Balad Remit system.\n\n### Cancellable Transactions\n\nOnly the following transaction statuses can be cancelled. Each status results in either an **Instant Cancel (Code 7)** or **Under Cancellation (Code 22)** depending on the case.\n\n\n| Transaction Status Code | Transaction Status                   | Transaction Type | Resulting Status            |\n|-------------|-------------------------------|------------------|------------------------------|\n| **0**       | Created                       | All              | **7 (Cancelled)**            |\n| **2**       | In Progress                   | Cash             | **22 (Under Cancellation)**  |\n| **8**       | Pending                       | All              | **7 (Cancelled)**            |\n| **11**      | Balad Compliance Suspended    | All              | **7 (Cancelled)**            |\n| **12**      | Balad Compliance Approved     | All              | **7 (Cancelled)**            |\n| **16**      | Bank Compliance Suspended     | Cash             | **22 (Under Cancellation)**  |\n| **19**      | Ready For Pickup   | Cash             | **22 (Under Cancellation)**  |\n\n\n---\n\n\n\n### Cancellation Reasons\nUse one of the following values in the **reason** field when submitting a cancellation request.\nIf none of the predefined reasons apply, set `reason` to **13** and include your explanation in `other_reason`.\n\n\n\n| Code   | Reason                                                |\n| ------ | ----------------------------------------------------- |\n| **1**  | I entered the wrong recipient name                    |\n| **2**  | I entered the wrong account, wallet, or phone number  |\n| **3**  | I chose the wrong bank, wallet, or payout method      |\n| **4**  | I entered the wrong amount                            |\n| **5**  | I no longer need to send this transfer                |\n| **6**  | The recipient no longer needs the money               |\n| **7**  | This is a duplicate transfer                          |\n| **8**  | The transfer is taking too long                       |\n| **9**  | I will send the money using a different method        |\n| **11** | Fees or exchange rate are not acceptable              |\n| **12** | I created this transaction by mistake (test or trial) |\n| **13** | Other reason (please specify)                         |\n\n---\n\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "remit-api",
+                "v1",
+                "transactions",
+                "cancel"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"remitter_reference_no\": \"<string>\",\n  \"reason\": \"<integer>\",\n  \"other_reason\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b9d4eb46-74cb-4d1b-bd12-296eb0194abb",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"remitter_reference_no\": \"BALADLINK-XXXXXXXXXX\",\n  \"reason\": 1,\n  \"other_reason\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"remitter_reference_no\": \"BALADLINK-XXXXXXXXXX\",\n    \"transaction_status_code\": 22,\n    \"transaction_status_description\": \"Under Cancellation\"\n  },\n  \"errors\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "06b15674-7b40-486c-8a7b-87aa2a2e48b7",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"remitter_reference_no\": \"BALADLINK-XXXXXXXXXX\",\n  \"reason\": 1,\n  \"other_reason\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": null,\n  \"errors\": [\n    {\n      \"code\": 113,\n      \"message\": \"Cancellation Not Available\",\n      \"field\": null,\n      \"additionalInfo\": null\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "904dd145-016f-4160-bba0-c7db013bf258",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"remitter_reference_no\": \"BALADLINK-XXXXXXXXXX\",\n  \"reason\": 1,\n  \"other_reason\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": null,\n  \"errors\": [\n    {\n      \"code\": 106,\n      \"message\": \"Invalid Reference Number\",\n      \"field\": null,\n      \"additionalInfo\": null\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "20f763a3-cd8d-497d-b972-85a51531bea7",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"remitter_reference_no\": \"BALADLINK-XXXXXXXXXX\",\n  \"reason\": 1,\n  \"other_reason\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": null,\n  \"errors\": [\n    {\n      \"code\": 169,\n      \"message\": \"Transaction already canceled before\",\n      \"field\": null,\n      \"additionalInfo\": null\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f68992e9-7f9e-469a-a92d-58e25792f4a1",
+          "name": "Create transaction",
+          "request": {
+            "name": "Create transaction",
+            "description": {
+              "content": "This endpoint is used to **initiate a money transfer transaction** through Balad’s Collection API.  \nIt supports multiple transaction types (Cash, Card, Bank Account and Wallet) and requires sender, receiver, and transaction details to be passed in the request body.  \n\n ---\n\n<AccordionGroup>\n  <Accordion title=\"Sender Details\" defaultOpen>\n\n| **Parameter** | **Remarks** |\n| --- | --- |\n| sender_first_name | First or full legal name. Must match valid ID. Could be sender first name only or sender full name (Full Name must be the full legal name of the sender and must exactly match the name as it appears on the sender's valid ID.) |\n| sender_middle_name | Middle name. Same character rules as first name. |\n| sender_last_name | Last name. Same character rules as first name. |\n| sender_address | Full sender address. |\n| sender_dateofbirth | Format: `DD-MMM-YYYY`. Example: `01-JUN-2020`. |\n| sender_contact_no | Contact number. |\n| sender_identity | Identity type: 1 = Passport, 2 = Government-issued ID. |\n| sender_identity_no | ID/Passport number. Allowed: periods (.), commas (,), underscores (_), hyphens (-), space ( ). |\n| sender_identity_expiry_date | ID Expiry Date. Format: `DD-MMM-YYYY`. Must not be expired. |\n| sender_nationality | ISO alpha-2 country code (e.g., `US`, `EG`). |\n| sender_country_code | ISO alpha-2 country code of residence. |\n| sender_country_of_birth | Country of birth, valid country string (e.g., `Egypt`, `United States of America`). |\n| sender_gender | 1 = Male, 2 = Female. |\n\n  </Accordion>\n\n  <Accordion title=\"Receiver Details\">\n\n  | **Parameter** | **Remarks** |\n  | --- | --- |\n  | receiver_first_name | First or full legal name in English. Must match valid ID. |\n  | receiver_middle_name | Middle name. Same character rules as first name. |\n  | receiver_last_name | Last name. Same character rules as first name.|\n  | receiver_address | Required in some cases (e.g., Account transfer in USD except bank code `BDC`). |\n  | receiver_contact_no | Valid phone number. Egyptian format supported. In case of cash, if provided the receiver will receive SMS with transaction details on this number Examples: `+20101111145`, `020101111145`, `01011111145`. |\n  | receiver_identity_type | Identity type: 1 = Passport, 2 = Government-issued ID (default 2 if not sent). |\n  | receiver_identity_no | ID/Passport number. Allowed: periods (.), commas (,), underscores (_), hyphens (-), space ( ). |\n  | receiver_gender | 1 = Male, 2 = Female. |\n\n  </Accordion>\n\n  <Accordion title=\"Transaction Details\">\n\n  | **Parameter** | **Remarks** |\n  | --- | --- |\n  | transaction_type | 1 = Cash, 2 = Account Credit, 3 = Wallet, 4 = Card. |\n  | remitter_reference_no | Unique agent reference. Allowed: A–Z, a–z, 0–9, dash (-). |\n  | sending_currency_code | ISO 4217 currency code. Examples: `EGP`, `USD`. |\n  | amount | Amount with up to 2 decimals. Example: `2500.50`. |\n  | account_no | Account/Wallet/Card number. Rules: <br>• 16 digits for card <br>• 11 digits for wallet (Egyptian phone number format) <br>Examples: `+201055555333`, `01055555333`. <br>• IBAN for USD bank transfers <br>• Required in case transaction type 'Cash' and bank code 'POST'  |\n  | receiver_bank_code | Bank code (e.g., `BDC`, `POST`). Required in some cases. [Banks List](https://developers.balad.tech/banks-list-20919916e0.md) |\n  | source_of_remittance | Source code of transaction. List available via sources endpoint. [Sources List](https://developers.balad.tech/sources-list-20919915e0.md) |\n  | purpose | Purpose code of transaction. List available via purposes endpoint. [Purposes List](https://developers.balad.tech/purposes-list-20919914e0.md)|\n  | value_date | Format: `DD-MMM-YYYY`. Example: `01-JUN-2020`. Must be today or later. |\n  | business_model_type | Business model: 1 = C2C (default)|\n\n  </Accordion>\n</AccordionGroup>\n\n\n## Required Fields \n\n| Field                     | Cash Pickup (`1`) | Bank Account (`2`) | Wallet (`3`) |\n|---------------------------|-------------------|--------------------|--------------|\n| **transaction_type**      | ✅                | ✅                 | ✅           |\n| **remitter_reference_no** | ✅                | ✅                 | ✅           |\n| **sender_first_name**     | ✅                | ✅                 | ✅           |\n| **sender_last_name**      | ✅                | ✅                 | ❌           |\n| **sender_address**        | ✅                | ✅                 | ✅           |\n| **sender_dateofbirth**    | ✅                | ✅                 | ✅           |\n| **sender_contact_no**    | ❌                | ❌                 | ❌           |\n| **sender_identity (type)**| ❌                | ❌                 | ❌           |\n| **sender_identity_no**    | ❌                | ❌                 | ❌           |\n| **sender_identity_expiry_date**    | ❌                | ❌                 | ❌           |\n| **sender_nationality**    | ✅                | ✅                 | ✅           |\n| **sender_country_code**   | ✅                | ✅                 | ✅           |\n| **receiver_first_name**   | ✅                | ✅                 | ✅           |\n| **receiver_last_name**    | ❌                | ❌                 | ❌           |\n| **receiver_address**      | ❌                | ✅                 | ❌           |\n| **receiver_contact_no**   | ✅                | ❌               | ✅           |\n| **receiver_identity_type**  | ❌                | ❌                 | ❌           |\n| **receiver_identity_no**  | ❌                | ❌                | ❌           |\n| **receiver_gender**  | ❌                | ❌                | ❌           |\n| **receiver_relationship**  | ❌                | ❌                | ❌           |\n| **account_no**            | ❌               | ✅                 | ✅           |\n| **receiver_bank_code**    | ✅                | ✅                 | ❌           |\n| **sending_currency_code** | ✅                | ✅                 | ✅           |\n| **amount**                | ✅                | ✅                 | ✅           |\n| **source_of_remittance**               | ❌                | ❌                 | ❌           |\n| **purpose**               | ✅                | ✅                 | ✅           |\n| **value_date**            | ❌                | ❌                 | ❌           |\n| **business_model_type**   | ❌                | ❌                 | ❌           |\n\n---   \n\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "remit-api",
+                "v1",
+                "transactions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "key": "X-Country-Code",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "disabled": false,
+                "key": "X-IV-Key",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_type\": \"<integer>\",\n  \"remitter_reference_no\": \"<string>\",\n  \"sender_first_name\": \"<string>\",\n  \"sender_last_name\": \"<string>\",\n  \"sender_address\": \"<string>\",\n  \"sender_dateofbirth\": \"<string>\",\n  \"sender_identity\": \"<integer>\",\n  \"sender_identity_no\": \"<string>\",\n  \"sender_nationality\": \"<string>\",\n  \"sender_country_code\": \"<string>\",\n  \"receiver_first_name\": \"<string>\",\n  \"sending_currency_code\": \"<string>\",\n  \"amount\": \"<string>\",\n  \"purpose\": \"<string>\",\n  \"sender_middle_name\": \"<string>\",\n  \"sender_contact_no\": \"<string>\",\n  \"sender_identity_expiry_date\": \"<string>\",\n  \"sender_country_of_birth\": \"<string>\",\n  \"sender_gender\": \"<integer>\",\n  \"receiver_middle_name\": \"<string>\",\n  \"receiver_last_name\": \"<string>\",\n  \"receiver_address\": \"<string>\",\n  \"receiver_contact_no\": \"<string>\",\n  \"receiver_identity_type\": \"<integer>\",\n  \"receiver_identity_no\": \"<string>\",\n  \"receiver_gender\": \"<integer>\",\n  \"receiver_relationship\": \"<string>\",\n  \"account_no\": \"<string>\",\n  \"receiver_bank_code\": \"<string>\",\n  \"source_of_remittance\": \"<string>\",\n  \"value_date\": \"<string>\",\n  \"business_model_type\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fafc26b4-128a-48ae-8e26-9f966e547980",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "X-Country-Code",
+                    "value": "",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-IV-Key",
+                    "value": "",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"transaction_type\": 1,\n  \"remitter_reference_no\": \"{{refNo}}\",\n  \"sender_first_name\": \"SHOHAIB KHAN\",\n  \"sender_last_name\": \"MOHAMMAD\",\n  \"sender_address\": \"KUWAIT ROAD KUWAIT\",\n  \"sender_dateofbirth\": \"10-May-1980\",\n  \"sender_identity\": 2,\n  \"sender_identity_no\": \"PK12255100\",\n  \"sender_identity_expiry_date\": \"23-Jul-2027\",\n  \"sender_nationality\": \"EG\",\n  \"sender_country_code\": \"KW\",\n  \"sender_contact_no\": \"96539053100\",\n  \"receiver_first_name\": \"Mohammad Faisal Rashid\",\n  \"receiver_last_name\": \"Mustafa\",\n  \"receiver_address\": \"EGYPT\",\n  \"receiver_identity_type\": 2,\n  \"receiver_nationality\": \"EG\",\n  \"receiver_contact_no\": \"01222222103\",\n  \"sending_currency_code\": \"EGP\",\n  \"amount\": \"5800\",\n  \"account_no\": \"01234323456\",\n  \"receiver_bank_code\": \"BDC\",\n  \"source_of_remittance\": \"001\",\n  \"purpose\": \"002\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"remitter_reference_no\": \"XXXXXXXXXXXXXXXXXXX\",\n    \"delivery_estimate\": \"XXXXXXXXXXXXXXXXXXX\"\n  },\n  \"errors\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "caf83301-82a2-4c40-ab50-14de6af02b92",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "X-Country-Code",
+                    "value": "",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-IV-Key",
+                    "value": "",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"transaction_type\": 1,\n  \"remitter_reference_no\": \"{{refNo}}\",\n  \"sender_first_name\": \"SHOHAIB KHAN\",\n  \"sender_last_name\": \"MOHAMMAD\",\n  \"sender_address\": \"KUWAIT ROAD KUWAIT\",\n  \"sender_dateofbirth\": \"10-May-1980\",\n  \"sender_identity\": 2,\n  \"sender_identity_no\": \"PK12255100\",\n  \"sender_identity_expiry_date\": \"23-Jul-2027\",\n  \"sender_nationality\": \"EG\",\n  \"sender_country_code\": \"KW\",\n  \"sender_contact_no\": \"96539053100\",\n  \"receiver_first_name\": \"Mohammad Faisal Rashid\",\n  \"receiver_last_name\": \"Mustafa\",\n  \"receiver_address\": \"EGYPT\",\n  \"receiver_identity_type\": 2,\n  \"receiver_nationality\": \"EG\",\n  \"receiver_contact_no\": \"01222222103\",\n  \"sending_currency_code\": \"EGP\",\n  \"amount\": \"5800\",\n  \"account_no\": \"01234323456\",\n  \"receiver_bank_code\": \"BDC\",\n  \"source_of_remittance\": \"001\",\n  \"purpose\": \"002\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": null,\n  \"errors\": [\n    {\n      \"code\": 9258,\n      \"message\": \"string\",\n      \"field\": \"string\"\n    },\n    {\n      \"code\": 6790,\n      \"message\": \"string\",\n      \"field\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9cbfe8ec-2578-4479-84b7-6bdcc3b49627",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "X-Country-Code",
+                    "value": "",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-IV-Key",
+                    "value": "",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"transaction_type\": 1,\n  \"remitter_reference_no\": \"{{refNo}}\",\n  \"sender_first_name\": \"SHOHAIB KHAN\",\n  \"sender_last_name\": \"MOHAMMAD\",\n  \"sender_address\": \"KUWAIT ROAD KUWAIT\",\n  \"sender_dateofbirth\": \"10-May-1980\",\n  \"sender_identity\": 2,\n  \"sender_identity_no\": \"PK12255100\",\n  \"sender_identity_expiry_date\": \"23-Jul-2027\",\n  \"sender_nationality\": \"EG\",\n  \"sender_country_code\": \"KW\",\n  \"sender_contact_no\": \"96539053100\",\n  \"receiver_first_name\": \"Mohammad Faisal Rashid\",\n  \"receiver_last_name\": \"Mustafa\",\n  \"receiver_address\": \"EGYPT\",\n  \"receiver_identity_type\": 2,\n  \"receiver_nationality\": \"EG\",\n  \"receiver_contact_no\": \"01222222103\",\n  \"sending_currency_code\": \"EGP\",\n  \"amount\": \"5800\",\n  \"account_no\": \"01234323456\",\n  \"receiver_bank_code\": \"BDC\",\n  \"source_of_remittance\": \"001\",\n  \"purpose\": \"002\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"remitter_reference_no\": \"string\",\n    \"delivery_estimate\": \"string\"\n  },\n  \"errors\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "492ce165-33c3-47c6-bd97-9671d846b383",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "X-Country-Code",
+                    "value": "",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-IV-Key",
+                    "value": "",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"transaction_type\": 1,\n  \"remitter_reference_no\": \"{{refNo}}\",\n  \"sender_first_name\": \"SHOHAIB KHAN\",\n  \"sender_last_name\": \"MOHAMMAD\",\n  \"sender_address\": \"KUWAIT ROAD KUWAIT\",\n  \"sender_dateofbirth\": \"10-May-1980\",\n  \"sender_identity\": 2,\n  \"sender_identity_no\": \"PK12255100\",\n  \"sender_identity_expiry_date\": \"23-Jul-2027\",\n  \"sender_nationality\": \"EG\",\n  \"sender_country_code\": \"KW\",\n  \"sender_contact_no\": \"96539053100\",\n  \"receiver_first_name\": \"Mohammad Faisal Rashid\",\n  \"receiver_last_name\": \"Mustafa\",\n  \"receiver_address\": \"EGYPT\",\n  \"receiver_identity_type\": 2,\n  \"receiver_nationality\": \"EG\",\n  \"receiver_contact_no\": \"01222222103\",\n  \"sending_currency_code\": \"EGP\",\n  \"amount\": \"5800\",\n  \"account_no\": \"01234323456\",\n  \"receiver_bank_code\": \"BDC\",\n  \"source_of_remittance\": \"001\",\n  \"purpose\": \"002\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"remitter_reference_no\": \"string\",\n    \"delivery_estimate\": \"string\"\n  },\n  \"errors\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fb1b95e7-2642-4bf3-8e05-aaae70138aa2",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "X-Country-Code",
+                    "value": "",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-IV-Key",
+                    "value": "",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"transaction_type\": 1,\n  \"remitter_reference_no\": \"{{refNo}}\",\n  \"sender_first_name\": \"SHOHAIB KHAN\",\n  \"sender_last_name\": \"MOHAMMAD\",\n  \"sender_address\": \"KUWAIT ROAD KUWAIT\",\n  \"sender_dateofbirth\": \"10-May-1980\",\n  \"sender_identity\": 2,\n  \"sender_identity_no\": \"PK12255100\",\n  \"sender_identity_expiry_date\": \"23-Jul-2027\",\n  \"sender_nationality\": \"EG\",\n  \"sender_country_code\": \"KW\",\n  \"sender_contact_no\": \"96539053100\",\n  \"receiver_first_name\": \"Mohammad Faisal Rashid\",\n  \"receiver_last_name\": \"Mustafa\",\n  \"receiver_address\": \"EGYPT\",\n  \"receiver_identity_type\": 2,\n  \"receiver_nationality\": \"EG\",\n  \"receiver_contact_no\": \"01222222103\",\n  \"sending_currency_code\": \"EGP\",\n  \"amount\": \"5800\",\n  \"account_no\": \"01234323456\",\n  \"receiver_bank_code\": \"BDC\",\n  \"source_of_remittance\": \"001\",\n  \"purpose\": \"002\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"remitter_reference_no\": \"string\",\n    \"delivery_estimate\": \"string\"\n  },\n  \"errors\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c50eaaac-c34a-4ba5-b4e9-db35e67d7412",
+          "name": "Transactions List",
+          "request": {
+            "name": "Transactions List",
+            "description": {
+              "content": "This method provides a list of transactions with the added pagination feature. The pagination feature allows clients to fetch transactions in smaller, manageable chunks, enhancing the efficiency and performance of the request-response cycle.\n\n**Request Params:**\n\n| **SI NO** | **Parameter** | **Length** | **Type** | **Mandatory** | **Remarks** |\n| --- | --- | --- | --- | --- | --- |\n| 1 | from_date | 13 | String | Y | Starting date of the required list (DD-MMM-YYYY) Ex: 01-JUN-2020 |\n| 2 | to_date | 13 | String | Y | End date of the required list (DD-MMM-YYYY) Ex: 01-JUN-2020 |\n| 3 | page_no | 1 or 2 | Integer | Y | Requested page number |\n| 4 | page_size | 1 or 2 | Integer | N | Number of transactions per page Should be 1000 or less |\n| 5 | reference_no | 20 | Integer | N | The reference a number of the transaction to needs to be retreived |\n\n**Response Params:**\n\n| **SI NO** | **Parameter** | **Remarks** |\n| --- | --- | --- |\n| 1 | page_no | Requested page number |\n| 2 | page_size | Number of transactions per page |\n| 3 | total | Total number of pages of the list |\n| 4 | has_next | Indicates if there is more than one page |\n| 5 | date | Date and time of the transaction |\n| 6 | remitter_reference_no | Remitter Reference Number |\n| 7 | bank_reference_no | Bank Reference Number |\n| 8 | type | Transaction type  <br>ex. \"AccountCredit\" |\n| 9 | sender_name | Sender Name |\n| 10 | receiver_name | Beneficiary Name |\n| 11 | account_no | Beneficiary's Account Number. |\n| 13 | paid_date | Beneficiary Cash Collected/Account  <br>Deposited Date |\n| 14 | status | Transaction status code and description |\n| 15 | currency_code | Currency Code Passed By Remitter To Balad |\n| 16 | amount | Amount Passed By Remitter To Balad |",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "remit-api",
+                "v1",
+                "transactions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "from_date",
+                  "value": "<string>",
+                  "description": "(Required) format: (DD-MMM-YYYY)"
+                },
+                {
+                  "disabled": false,
+                  "key": "to_date",
+                  "value": "<string>",
+                  "description": "(Required) format: (DD-MMM-YYYY)"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_no",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "reference_no",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "86f1bf7d-6cf9-4f38-a0b9-3d91d92be169",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from_date",
+                      "value": "15-jul-2023"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "31-jul-2023"
+                    },
+                    {
+                      "key": "page_no",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "reference_no",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"page_no\": 1,\n    \"page_size\": 20,\n    \"total\": 3,\n    \"has_next\": false,\n    \"items\": [\n      {\n        \"date\": \"DD-MMM-YYYY hh:mm AM/PM\",\n        \"remitter_reference_no\": \"BALADLINK-XXXXXXXXXX\",\n        \"bank_reference_no\": \"XXXXXXXXXX\",\n        \"type\": \"AccountCredit\",\n        \"sender_name\": \"XXXXX XXXXX XXXXX\",\n        \"receiver_name\": \"XXXXX XXXXX XXXXX\",\n        \"account_number\": \"XXXXXXXXXX\",\n        \"paid_date\": \"DD-MMM-YYYY\",\n        \"status\": \"Transferred\",\n        \"status_details\": {\n          \"code\": 1,\n          \"description\": \"Transferred\"\n        },\n        \"amount\": 1,\n        \"currency_code\": \"EGP\",\n        \"failing_reason\": null\n      },\n      {\n        \"date\": \"DD-MMM-YYYY hh:mm AM/PM\",\n        \"remitter_reference_no\": \"BALADLINK-XXXXXXXXXX\",\n        \"bank_reference_no\": \"XXXXXXXXXX\",\n        \"type\": \"AccountCredit\",\n        \"sender_name\": \"XXXXX XXXXX XXXXX\",\n        \"receiver_name\": \"XXXXX XXXXX XXXXX\",\n        \"account_number\": \"XXXXXXXXXX\",\n        \"paid_date\": \"DD-MMM-YYYY\",\n        \"status\": \"SettledOpenForReturn\",\n        \"status_details\": {\n          \"code\": 1,\n          \"description\": \"Transferred\"\n        },\n        \"amount\": 1,\n        \"currency_code\": \"EGP\",\n        \"failing_reason\": null\n      },\n      {\n        \"date\": \"DD-MMM-YYYY hh:mm AM/PM\",\n        \"remitter_reference_no\": \"BALADLINK-XXXXXXXXXX\",\n        \"bank_reference_no\": \"\",\n        \"type\": \"Wallet\",\n        \"sender_name\": \"XXXXX XXXXX XXXXX\",\n        \"receiver_name\": \"XXXXX XXXXX XXXXX\",\n        \"account_number\": \"XXXXXXXXXX\",\n        \"paid_date\": \"DD-MMM-YYYY\",\n        \"status\": \"Transferred\",\n        \"status_details\": {\n          \"code\": 1,\n          \"description\": \"Transferred\"\n        },\n        \"amount\": 1,\n        \"currency_code\": \"EGP\",\n        \"failing_reason\": null\n      }\n    ]\n  },\n  \"errors\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "740ac579-8109-4c0f-b13f-55f75b024437",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from_date",
+                      "value": "15-jul-2023"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "31-jul-2023"
+                    },
+                    {
+                      "key": "page_no",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "reference_no",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": null,\n  \"errors\": [\n    {\n      \"code\": 10,\n      \"message\": \"Invalid From Date.\"\n    },\n    {\n      \"code\": 10,\n      \"message\": \"Invalid To Date.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "27e6e4ec-9029-4357-9415-36503f6c568e",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from_date",
+                      "value": "15-jul-2023"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "31-jul-2023"
+                    },
+                    {
+                      "key": "page_no",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "reference_no",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": null,\n  \"errors\": [\n    {\n      \"code\": 10,\n      \"message\": \"From Date should be less than or equal ToDate\"\n    },\n    {\n      \"code\": 10,\n      \"message\": \"To Date should be greater than or equal from date\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e86cac19-17e3-4bad-866d-a5d0504e0c82",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from_date",
+                      "value": "15-jul-2023"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "31-jul-2023"
+                    },
+                    {
+                      "key": "page_no",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "reference_no",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": null,\n  \"errors\": [\n    {\n      \"code\": 102,\n      \"message\": \"No Record Found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6227b9ac-6545-4f1d-9945-ad5554ed9e18",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from_date",
+                      "value": "15-jul-2023"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "31-jul-2023"
+                    },
+                    {
+                      "key": "page_no",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "reference_no",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": null,\n  \"errors\": [\n    {\n      \"code\": 108,\n      \"message\": \"Date difference cannot be more than 15\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bd1e5839-8568-4b93-bebf-356f833b55a9",
+          "name": "Export Transactions List",
+          "request": {
+            "name": "Export Transactions List",
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "remit-api",
+                "v1",
+                "transactions",
+                "export"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "from_date",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "to_date",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "7d65df07-18cc-4896-b16d-2a3097bd9c98",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions",
+                    "export"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from_date",
+                      "value": "01-AUG-2025"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "31-AUG-2025"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"page_no\": 1,\n    \"page_size\": 1000,\n    \"total\": 1,\n    \"has_next\": false,\n    \"items\": [\n      {\n        \"id\": 1,\n        \"transaction_type\": 2,\n        \"reference_no\": \"SNC003349444\",\n        \"sender_first_name\": \"MAHAMOUD\",\n        \"sender_middle_name\": \"HAJI\",\n        \"sender_last_name\": \"YUSUF-ADAN\",\n        \"sender_address\": \"SNC\",\n        \"sender_contact_no\": \"733432008\",\n        \"sender_date_of_birth\": \"01-Mar-1979\",\n        \"sender_email\": \"\",\n        \"sender_identity\": 1,\n        \"sender_identity_no\": \"2503599\",\n        \"sender_identity_expiry_date\": \"31-Mar-2027\",\n        \"sender_nationality\": \"Somalia\",\n        \"sender_country_code\": \"Yemen\",\n        \"sender_country_of_birth\": null,\n        \"receiver_first_name\": \"sad sdfa d\",\n        \"receiver_middle_name\": \"\",\n        \"receiver_last_name\": \"\",\n        \"receiver_address\": \"EGYPT\",\n        \"receiver_identity_no\": \"\",\n        \"receiver_contact_no\": \"201032486931\",\n        \"sending_currency_code\": \"EGP\",\n        \"amount\": 540.37,\n        \"deducted_amount_in_partner_currency\": 10.81,\n        \"exchange_rate\": 50,\n        \"fees\": 1.08,\n        \"fees_currency_code\": \"USD\",\n        \"account_no\": \"01032323000102\",\n        \"receiver_bank_code\": \"CIB\",\n        \"source_of_remittance\": \"SALARY\",\n        \"purpose\": \"TRANSFER TO OWN FOREIGN BANK AC\",\n        \"value_date\": \"29-Apr-2026\",\n        \"sender_employer_name\": \"\",\n        \"sender_job_description\": \"\",\n        \"receiver_employer_name\": \"\",\n        \"receiver_job_description\": \"\",\n        \"sender_gender\": \"Male\",\n        \"receiver_gender\": \"Male\",\n        \"receiver_relationship\": null,\n        \"created_at\": \"20-Aug-2025 09:02 AM\",\n        \"failure_reason\": \"\",\n        \"response_status\": \"In Progress\",\n        \"response_status_code\": 2,\n        \"last_update\": \"20-Aug-2025\"\n      }\n    ]\n  },\n  \"errors\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fb3ead8e-1409-45ee-aafd-55990facd3c9",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions",
+                    "export"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from_date",
+                      "value": "01-AUG-2025"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "31-AUG-2025"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": null,\n  \"errors\": [\n    {\n      \"code\": 10,\n      \"message\": \"Invalid From Date.\"\n    },\n    {\n      \"code\": 10,\n      \"message\": \"Invalid To Date.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4d06fc3c-ed97-4ed7-9ea4-5d32c0409e67",
+          "name": "Get transaction status V2",
+          "request": {
+            "name": "Get transaction status V2",
+            "description": {
+              "content": "This method provides the current status of a transaction.\n\n## 🧾 Transaction Status Codes\n\n| Transaction Status Code | Description | Meaning |\n| :--- | :--- | :--- |\n| **0** | **Created** | Transaction record is initiated. |\n| **1** | **Transferred** | Funds have been successfully sent to the beneficiary. |\n| **2** | **Bank Processing** | Transaction is currently being processed by the bank. |\n| **4** | **Returned** | Funds have been returned to the remitter. |\n| **7** | **Canceled** | Transaction was canceled by the remitter. |\n| **8** | **Pending** | Awaiting further action (e.g., funding or review). |\n| **9** | **Failed** | General failure during processing. |\n| **11** | **Balad Compliance Suspended** | Transaction flagged for internal compliance review. |\n| **12** | **Balad Compliance Approved** | Compliance review passed. |\n| **13** | **Balad Compliance Rejected** | Transaction rejected by Balad's compliance team. |\n| **15** | **Bank Rejected** | Transaction rejected by the receiving bank. |\n| **16** | **Bank Compliance Suspended** | Transaction is under review by the bank's compliance team. |\n| **17** | **Bank Compliance Rejected** | Transaction rejected by the bank's compliance team. |\n| **19** | **Ready For Pickup** | Transaction is ready for cash pickup. |\n| **20** | **Transferred To ACH** | Transaction passed to a third party for execution. |\n| **21** | **Third Party Rejected** | Transaction rejected by the third party. |\n| **22** | **Under Cancellation** | Transaction is under cancellation. |\n\n## 🚨 Failure Codes & Messages\n\n| Transaction Status Code | Balad Parent Category | Balad Code | Meaning / UX Message |\n| :--- | :--- | :--- | :--- |\n| **21** | `BEN_BANK_RESTRICTION` | `BEN_BNK_001` | Beneficiary bank is temporarily unavailable. |\n| **21** | `BEN_BANK_RESTRICTION` | `BEN_BNK_002` | Beneficiary account is restricted and cannot receive funds. |\n| **21** | `BEN_BANK_RESTRICTION` | `BEN_BNK_003` | Beneficiary account does not accept EGP. |\n| **21** | `INVALID_ACCOUNT` | `ACC_001` | Incorrect beneficiary account number. |\n| **21** | `INVALID_ACCOUNT` | `ACC_002` | Invalid / inconsistent account details. |\n| **21** | `INVALID_ACCOUNT` | `ACC_003` | Invalid beneficiary wallet number. |\n| **15** | `INVALID_ACCOUNT` | `ACC_004` | Invalid account format / wrong account length. |\n| **13 or 17** | `COMPLIANCE_RESTRICTION` | `CMP_001` | Rejected due to AML / sanctions screening. |\n| **7** | `CANCELLED` | `CNL_001` | Transaction cancelled. |\n| **4** | `RETURNED` | `RTN_001` | Transaction expired and is automatically returned. |\n| **9** | `TECH_FAIL` | `TECH_FAL_001` | Technical issue, transaction processing failed. |\n| **21 or 15 or 4** | `MISC` | `MSC_001` | Generic bank rejection / unspecified error. |\n\n:::tip[Handling MISC Failures]\n**`MSC_001`** is a generic, catch-all failure reason used when a rejection from the bank doesn't map to a specific, known Balad failure code. We recommend logging these cases and contacting Balad support if they occur frequently.\n:::\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "remit-api",
+                "v2",
+                "transactions",
+                ":remitter_reference_no",
+                "status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "remitter_reference_no",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "6f221892-3809-449f-8325-4fd688d34f9a",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v2",
+                    "transactions",
+                    ":remitter_reference_no",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "remitter_reference_no",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"remitter_reference_no\": \"Ref-1764071699924\",\n    \"transaction_status\": {\n      \"code\": 1,\n      \"description\": \"Transferred\"\n    },\n    \"failing_reason\": \"\",\n    \"failure_details\": null\n  },\n  \"errors\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e5b7e6ca-0f4f-4722-811e-bfd89e09babf",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v2",
+                    "transactions",
+                    ":remitter_reference_no",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "remitter_reference_no",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": null,\n  \"errors\": [\n    {\n      \"code\": 3792,\n      \"message\": \"string\"\n    },\n    {\n      \"code\": 451,\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "01fab8d0-1dca-47b8-9496-0aef7216c65f",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v2",
+                    "transactions",
+                    ":remitter_reference_no",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "remitter_reference_no",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"remitter_reference_no\": \"string\",\n    \"transaction_status\": {\n      \"code\": 5583,\n      \"description\": \"string\"\n    },\n    \"failure_details\": {\n      \"category\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\",\n      \"additional_info\": \"string\"\n    },\n    \"failing_reason\": \"string\"\n  },\n  \"errors\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8ddf99c3-a0ff-4ce3-bb1c-1bf4a17fc071",
+          "name": "Update transaction",
+          "request": {
+            "name": "Update transaction",
+            "description": {
+              "content": "The Update Receiver Info API allows partners to request corrections to receiver information (name and contact number) for an existing transaction. \n\n### Important Notes\n- Updates can only be requested for Cash Transactions and statuses that is **not Final Status**. Check it at [Transaction Lifecycle](https://developers.balad.tech/transaction-lifecycle-v2-1733418m0.md)\n- A support ticket is automatically created for operations team to review and approve the update\n\n## Request Processing Logic\n\n| Transaction Status              | Auto Update | Ticket Created | request_status | request_status_code |\n|---------------------------------|-------------|----------------|----------------|---------------------|\n| Pending                         | Yes         | No             | Updated        | 1                   |\n| Balad Compliance Suspended      | Yes         | No             | Updated        | 1                   |\n| Sent to BDC (Not Final)         | No          | Yes            | In Progress    | 2                   |",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "remit-api",
+                "v1",
+                "transactions",
+                "update"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"remitterReferenceNo\": \"<string>\",\n  \"receiverFirstName\": \"<string>\",\n  \"receiverContactNo\": \"<string>\",\n  \"receiverMiddleName\": \"<string>\",\n  \"receiverLastName\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3b574008-7a49-42c6-8386-ff2cd50d81b3",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions",
+                    "update"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"remitterReferenceNo\": \"TXN-20260115-ABC123\",\n  \"receiverFirstName\": \"Ahmed\",\n  \"receiverMiddleName\": \"Mohamed\",\n  \"receiverLastName\": \"Ali\",\n  \"receiverContactNo\": \"+201234567890\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"request_status\": \"Updated\",\n    \"request_status_code\": 1,\n    \"bank_reference_no\": null,\n    \"remitter_reference_no\": \"XXXXXXXXXXXXXXXXXXX\",\n    \"delivery_estimate\": null\n  },\n  \"errors\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c6402467-44e1-4e85-9825-92dfb6342284",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions",
+                    "update"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"remitterReferenceNo\": \"TXN-20260115-ABC123\",\n  \"receiverFirstName\": \"Ahmed\",\n  \"receiverMiddleName\": \"Mohamed\",\n  \"receiverLastName\": \"Ali\",\n  \"receiverContactNo\": \"+201234567890\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": null,\n  \"errors\": [\n    {\n      \"code\": 161,\n      \"message\": \"Can not update transaction info\",\n      \"field\": null,\n      \"additional_info\": null\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e2fc1ba0-ab2b-4a5e-8c6d-7104b141db4d",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions",
+                    "update"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"remitterReferenceNo\": \"TXN-20260115-ABC123\",\n  \"receiverFirstName\": \"Ahmed\",\n  \"receiverMiddleName\": \"Mohamed\",\n  \"receiverLastName\": \"Ali\",\n  \"receiverContactNo\": \"+201234567890\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": null,\n  \"errors\": [\n    {\n      \"code\": 174,\n      \"message\": \"Sorry, this transaction type isn’t allowed.\",\n      \"field\": null,\n      \"additional_info\": null\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "02ad9f08-d1bc-493f-bbd2-532031d432ff",
+          "name": "Validate Account",
+          "request": {
+            "name": "Validate Account",
+            "description": {
+              "content": "This API allows clients to validate bank account numbers and IBANs before initiating transfers. It enforces specific rules based on currency (EGP vs. USD), bank codes, and length requirements.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "remit-api",
+                "v1",
+                "transactions",
+                "validate-account"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"account_no\": \"<string>\",\n  \"bank_code\": \"<string>\",\n  \"currency\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "da8b683f-2a25-4745-8ed3-b2fa4852179a",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions",
+                    "validate-account"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_no\": \"78153237676595\",\n  \"bank_code\": \"SCB\",\n  \"currency\": \"EGP\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": null,\n  \"errors\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1b1fd285-5eb1-4fff-a4e8-cc0ab4e2985d",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "transactions",
+                    "validate-account"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_no\": \"78153237676595\",\n  \"bank_code\": \"SCB\",\n  \"currency\": \"EGP\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": null,\n  \"errors\": [\n    {\n      \"code\": 10,\n      \"message\": \"Invalid Input\",\n      \"field\": \"account_no\",\n      \"additionalInfo\": \"Invalid Egyptian IBAN format. Please enter a valid IBAN.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b0b63f6d-0a8e-4ea4-8d4b-a9ea9cadc65d",
+    "name": "Balad Gateway APIs/Authentication APIs/Link/Transactions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Balad Gateway APIs — a suite of RESTful endpoints for secure inward cross-border remittances and payouts into Egypt (bank transfers, mobile wallets, cash pickup). Covers authentication, exchange rates, balance, secrets management, lookups, and the full transaction lifecycle. Assembled by API Evangelist from the provider's per-operation OpenAPI fragments published on developers.balad.tech.\n\nContact Support:\n Name: Balad Support\n Email: support@balad.me",
+      "type": "text/plain"
+    }
+  }
+}

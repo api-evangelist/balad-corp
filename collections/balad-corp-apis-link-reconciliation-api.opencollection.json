@@ -1,0 +1,57 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Balad Gateway APIs/Authentication APIs/Link/Reconciliation API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "APIs/Link/Reconciliation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Reconciliation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/remit-api/v1/reconciliation",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "params": [
+              {
+                "name": "start_date",
+                "value": "16-Nov-2025",
+                "type": "query"
+              },
+              {
+                "name": "end_date",
+                "value": "16-Nov-2025",
+                "type": "query"
+              },
+              {
+                "name": "page_no",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "50",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch account reconciliation details including opening & closing balances and transaction history."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

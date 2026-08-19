@@ -1,0 +1,216 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Balad Gateway APIs/Authentication APIs/Link/Transactions API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "APIs/Link/Transactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Calculate receiving amount",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/remit-api/v1/transactions/calculate-receiving-amount",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API endpoint calculates and retrieves the receiving amount based on the sending amount. The transaction type is optional; if provided, the API will return the receiving amount in the currency associated with the specified transaction type. If the transaction type is not provided, the API will return the receiving amount for all available currencies.\n\n**Request Params**\n\n| **Parameter** | **Type** | **Mandatory** | **Remarks** |\n| --- | --- | --- | --- |\n| amount_usd | Integer | Y | This is "
+        },
+        {
+          "info": {
+            "name": "Cancel transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/remit-api/v1/transactions/cancel",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This method handles transaction cancellation within the Balad Remit system.\n\n### Cancellable Transactions\n\nOnly the following transaction statuses can be cancelled. Each status results in either an **Instant Cancel (Code 7)** or **Under Cancellation (Code 22)** depending on the case.\n\n\n| Transaction Status Code | Transaction Status                   | Transaction Type | Resulting Status            |\n|-------------|-------------------------------|------------------|------------------------------|"
+        },
+        {
+          "info": {
+            "name": "Transactions List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/remit-api/v1/transactions",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "params": [
+              {
+                "name": "from_date",
+                "value": "15-jul-2023",
+                "type": "query",
+                "description": "format: (DD-MMM-YYYY)"
+              },
+              {
+                "name": "to_date",
+                "value": "31-jul-2023",
+                "type": "query",
+                "description": "format: (DD-MMM-YYYY)"
+              },
+              {
+                "name": "page_no",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "10",
+                "type": "query"
+              },
+              {
+                "name": "reference_no",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This method provides a list of transactions with the added pagination feature. The pagination feature allows clients to fetch transactions in smaller, manageable chunks, enhancing the efficiency and performance of the request-response cycle.\n\n**Request Params:**\n\n| **SI NO** | **Parameter** | **Length** | **Type** | **Mandatory** | **Remarks** |\n| --- | --- | --- | --- | --- | --- |\n| 1 | from_date | 13 | String | Y | Starting date of the required list (DD-MMM-YYYY) Ex: 01-JUN-2020 |\n| 2 | to_da"
+        },
+        {
+          "info": {
+            "name": "Create transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/remit-api/v1/transactions",
+            "headers": [
+              {
+                "name": "X-Country-Code",
+                "value": ""
+              },
+              {
+                "name": "X-IV-Key",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint is used to **initiate a money transfer transaction** through Balad’s Collection API.  \nIt supports multiple transaction types (Cash, Card, Bank Account and Wallet) and requires sender, receiver, and transaction details to be passed in the request body.  \n\n ---\n\n<AccordionGroup>\n  <Accordion title=\"Sender Details\" defaultOpen>\n\n| **Parameter** | **Remarks** |\n| --- | --- |\n| sender_first_name | First or full legal name. Must match valid ID. Could be sender first name only or sender "
+        },
+        {
+          "info": {
+            "name": "Export Transactions List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/remit-api/v1/transactions/export",
+            "params": [
+              {
+                "name": "from_date",
+                "value": "01-AUG-2025",
+                "type": "query"
+              },
+              {
+                "name": "to_date",
+                "value": "31-AUG-2025",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Export Transactions List"
+        },
+        {
+          "info": {
+            "name": "Get transaction status V2",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/remit-api/v2/transactions/:remitter_reference_no/status",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "params": [
+              {
+                "name": "remitter_reference_no",
+                "value": "BALADLINK-XXXXXXXXXXX",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This method provides the current status of a transaction.\n\n## 🧾 Transaction Status Codes\n\n| Transaction Status Code | Description | Meaning |\n| :--- | :--- | :--- |\n| **0** | **Created** | Transaction record is initiated. |\n| **1** | **Transferred** | Funds have been successfully sent to the beneficiary. |\n| **2** | **Bank Processing** | Transaction is currently being processed by the bank. |\n| **4** | **Returned** | Funds have been returned to the remitter. |\n| **7** | **Canceled** | Transacti"
+        },
+        {
+          "info": {
+            "name": "Update transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/remit-api/v1/transactions/update",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "The Update Receiver Info API allows partners to request corrections to receiver information (name and contact number) for an existing transaction. \n\n### Important Notes\n- Updates can only be requested for Cash Transactions and statuses that is **not Final Status**. Check it at [Transaction Lifecycle](https://developers.balad.tech/transaction-lifecycle-v2-1733418m0.md)\n- A support ticket is automatically created for operations team to review and approve the update\n\n## Request Processing Logic\n\n| "
+        },
+        {
+          "info": {
+            "name": "Validate Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/remit-api/v1/transactions/validate-account",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API allows clients to validate bank account numbers and IBANs before initiating transfers. It enforces specific rules based on currency (EGP vs. USD), bank codes, and length requirements."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

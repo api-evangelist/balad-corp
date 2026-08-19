@@ -1,0 +1,52 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Balad Gateway APIs/Authentication API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "APIs/Authentication",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/identity/v1/token",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "grant_type",
+                  "value": ""
+                },
+                {
+                  "name": "client_id",
+                  "value": ""
+                },
+                {
+                  "name": "client_secret",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "### Request\n\nThis API is intended to allow the Partner to authenticate and obtain an access token from B. The Partner sends their `client_id` and `client_secret` (using `grant_type: client_credentials`) to B's token endpoint. B validates these credentials and, if successful, returns a Bearer `access_token`, `token_type`, and `expires_in`. This access token must be included in the `Authorization` header (e.g., `Authorization: Bearer` ) for all subsequent API calls to B's protected resources.\n\n###"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

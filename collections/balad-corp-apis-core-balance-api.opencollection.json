@@ -1,0 +1,47 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Balad Gateway APIs/Authentication APIs/Core/Balance API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "APIs/Core/Balance",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Current Balance",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/core/v1/services/:service_id/balance",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "params": [
+              {
+                "name": "service_id",
+                "value": "1",
+                "type": "path",
+                "description": "1 = Balad Link, 2 = Balad Money, 3 = Balad Bills, 4 = Balad Collection, 5 = Balad VAS"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "The endpoint retrieves the balance information for a specific service identified by the `service_id`.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

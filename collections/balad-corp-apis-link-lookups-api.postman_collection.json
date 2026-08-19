@@ -1,0 +1,425 @@
+{
+  "item": [
+    {
+      "id": "67e072c1-9c0a-447a-a237-c426bf25c4b5",
+      "name": "APIs/Link/Lookups",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "bcabcab1-e212-499a-862c-1cb68d1fb299",
+          "name": "Banks List",
+          "request": {
+            "name": "Banks List",
+            "description": {
+              "content": "This method retrieves a list of available banks in the system. The list can be filtered based on the **transaction type** and **receiving country** to provide a more refined set of results.\n\n### Filters:\n\n- **Transaction Type**: You can filter the list of banks based on the type of transaction being conducted. The supported transaction types are:\n    \n    1. **Cash**\n        \n    2. **Bank Account**\n        \n    3. **Wallet**\n        \n    4. **Card**",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "remit-api",
+                "banks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "transaction_type",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "key": "X-Country-Code",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "1b88e972-e73e-4d44-8c6a-30e9517cc136",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "banks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "transaction_type",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-Country-Code",
+                    "value": "",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"XXX\",\n      \"description\": \"BANK 1\",\n      \"address\": \"BANK 1 ADDRESS\",\n      \"bic_code\": \"BANK1EGCXXXX\"\n    },\n    {\n      \"code\": \"XXXX\",\n      \"description\": \"BANK 2\",\n      \"address\": \"BANK 2 ADDRESS\",\n      \"bic_code\": \"BANK2EGCXXXX\"\n    }\n  ],\n  \"errors\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5ded29c2-245a-4569-bed4-7057aa89359f",
+          "name": "Purposes List",
+          "request": {
+            "name": "Purposes List",
+            "description": {
+              "content": "This method provides list of available Purpose Codes on the system",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "remit-api",
+                "v1",
+                "lookups",
+                "purposes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "key": "X-Country-Code",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "eac1ad3d-e159-43cb-ab29-5255e1b44067",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "lookups",
+                    "purposes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "X-Country-Code",
+                    "value": "",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"XXX\",\n      \"description\": \"PURPOSE 1\"\n    },\n    {\n      \"code\": \"XXX\",\n      \"description\": \"PURPOSE 2\"\n    }\n  ],\n  \"errors\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "79d9faed-8dc0-48d9-9e7f-536bf8f4a4f0",
+          "name": "Relations",
+          "request": {
+            "name": "Relations",
+            "description": {
+              "content": "This method provides list of available receiver relationships on the system.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "remit-api",
+                "v1",
+                "lookups",
+                "relationships"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "key": "X-Country-Code",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "0716e7d9-fb95-4b5c-8a47-69e89ead5ae0",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "lookups",
+                    "relationships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "X-Country-Code",
+                    "value": "",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"XXX\",\n      \"description\": \"RELATIONSHIP 1\"\n    },\n    {\n      \"code\": \"XXX\",\n      \"description\": \"RELATIONSHIP 2\"\n    }\n  ],\n  \"errors\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5b9d5c9f-f4e2-482d-96db-ee5a70c47eb0",
+          "name": "Sources List",
+          "request": {
+            "name": "Sources List",
+            "description": {
+              "content": "This method provides list of available Source of Funds on the system",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "remit-api",
+                "v1",
+                "lookups",
+                "sources"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "key": "X-Country-Code",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "82faa6c1-4b75-4e54-b5c0-964e2f5f056c",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "lookups",
+                    "sources"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "X-Country-Code",
+                    "value": "",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"XXX\",\n      \"description\": \"SOURCE 1\"\n    },\n    {\n      \"code\": \"XXX\",\n      \"description\": \"SOURCE 2\"\n    }\n  ],\n  \"errors\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "5e96eadd-9057-4354-a2f9-1a6565e28ee4",
+    "name": "Balad Gateway APIs/Authentication APIs/Link/Lookups API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Balad Gateway APIs — a suite of RESTful endpoints for secure inward cross-border remittances and payouts into Egypt (bank transfers, mobile wallets, cash pickup). Covers authentication, exchange rates, balance, secrets management, lookups, and the full transaction lifecycle. Assembled by API Evangelist from the provider's per-operation OpenAPI fragments published on developers.balad.tech.\n\nContact Support:\n Name: Balad Support\n Email: support@balad.me",
+      "type": "text/plain"
+    }
+  }
+}

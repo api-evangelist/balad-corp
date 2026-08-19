@@ -1,0 +1,113 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Balad Gateway APIs/Authentication APIs/Link/Lookups API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "APIs/Link/Lookups",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Banks List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/remit-api/banks",
+            "headers": [
+              {
+                "name": "X-Country-Code",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "params": [
+              {
+                "name": "transaction_type",
+                "value": "2",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This method retrieves a list of available banks in the system. The list can be filtered based on the **transaction type** and **receiving country** to provide a more refined set of results.\n\n### Filters:\n\n- **Transaction Type**: You can filter the list of banks based on the type of transaction being conducted. The supported transaction types are:\n    \n    1. **Cash**\n        \n    2. **Bank Account**\n        \n    3. **Wallet**\n        \n    4. **Card**"
+        },
+        {
+          "info": {
+            "name": "Purposes List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/remit-api/v1/lookups/purposes",
+            "headers": [
+              {
+                "name": "X-Country-Code",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "docs": "This method provides list of available Purpose Codes on the system"
+        },
+        {
+          "info": {
+            "name": "Relations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/remit-api/v1/lookups/relationships",
+            "headers": [
+              {
+                "name": "X-Country-Code",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "docs": "This method provides list of available receiver relationships on the system."
+        },
+        {
+          "info": {
+            "name": "Sources List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/remit-api/v1/lookups/sources",
+            "headers": [
+              {
+                "name": "X-Country-Code",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "docs": "This method provides list of available Source of Funds on the system"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

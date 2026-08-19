@@ -1,0 +1,147 @@
+{
+  "item": [
+    {
+      "id": "62afeeac-d271-48be-a8ff-5fa8756eb656",
+      "name": "APIs/Core/Balance",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "625c6422-ea03-417b-9c26-4523172de907",
+          "name": "Get Current Balance",
+          "request": {
+            "name": "Get Current Balance",
+            "description": {
+              "content": "The endpoint retrieves the balance information for a specific service identified by the `service_id`.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "core",
+                "v1",
+                "services",
+                ":service_id",
+                "balance"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "service_id",
+                  "description": "(Required) 1 = Balad Link, 2 = Balad Money, 3 = Balad Bills, 4 = Balad Collection, 5 = Balad VAS"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "0df24c1e-72d3-4716-a953-793ac39cdeea",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "core",
+                    "v1",
+                    "services",
+                    ":service_id",
+                    "balance"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "service_id",
+                      "description": "(Required) 1 = Balad Link, 2 = Balad Money, 3 = Balad Bills, 4 = Balad Collection, 5 = Balad VAS"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"balance\": 500,\n      \"balance_date\": \"10-Sep-2025 10:00 AM\",\n      \"currency_description\": \"QAR\"\n    },\n    {\n      \"balance\": 800,\n      \"balance_date\": \"30-Jul-2024 10:55 AM\",\n      \"currency_description\": \"EUR\"\n    }\n  ],\n  \"errors\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "a88dba12-f1f8-4249-a482-09d3d7f80fa6",
+    "name": "Balad Gateway APIs/Authentication APIs/Core/Balance API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Balad Gateway APIs — a suite of RESTful endpoints for secure inward cross-border remittances and payouts into Egypt (bank transfers, mobile wallets, cash pickup). Covers authentication, exchange rates, balance, secrets management, lookups, and the full transaction lifecycle. Assembled by API Evangelist from the provider's per-operation OpenAPI fragments published on developers.balad.tech.\n\nContact Support:\n Name: Balad Support\n Email: support@balad.me",
+      "type": "text/plain"
+    }
+  }
+}

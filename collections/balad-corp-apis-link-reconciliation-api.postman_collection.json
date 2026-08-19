@@ -1,0 +1,149 @@
+{
+  "item": [
+    {
+      "id": "324264fa-8ca8-4db4-9b28-db43bb9509a0",
+      "name": "APIs/Link/Reconciliation",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b819705a-e308-4a96-9bed-efc55567fa98",
+          "name": "Reconciliation",
+          "request": {
+            "name": "Reconciliation",
+            "description": {
+              "content": "Fetch account reconciliation details including opening & closing balances and transaction history.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "remit-api",
+                "v1",
+                "reconciliation"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start_date",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "end_date",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_no",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a1d24d41-0c4e-41d2-89e0-87b69cfd1282",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remit-api",
+                    "v1",
+                    "reconciliation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_date",
+                      "value": "16-Nov-2025"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "16-Nov-2025"
+                    },
+                    {
+                      "key": "page_no",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"customer_name\": \"string\",\n    \"currency\": \"string\",\n    \"from_date\": \"string\",\n    \"to_date\": \"string\",\n    \"opening_balance\": 697.467263114231,\n    \"closing_balance\": 6598.934947350758,\n    \"transactions\": {\n      \"page_no\": 2108,\n      \"page_size\": 4267,\n      \"total\": 712,\n      \"has_next\": false,\n      \"items\": [\n        {\n          \"transaction_date\": \"string\",\n          \"value_date\": \"string\",\n          \"reference_no\": \"string\",\n          \"channel_type\": \"string\",\n          \"transaction_type\": \"string\",\n          \"transaction_amount\": 5886,\n          \"transaction_amount_currency\": \"string\",\n          \"exchange_rate\": 7499.001662113759,\n          \"debit\": 6650.734576662016,\n          \"credit\": 3028,\n          \"balance_amount\": 2378.8570471105854,\n          \"debit_credit_currency\": \"string\",\n          \"transaction_status\": \"string\",\n          \"date\": \"string\",\n          \"description\": \"string\",\n          \"notes\": \"string\"\n        },\n        {\n          \"transaction_date\": \"string\",\n          \"value_date\": \"string\",\n          \"reference_no\": \"string\",\n          \"channel_type\": \"string\",\n          \"transaction_type\": \"string\",\n          \"transaction_amount\": 1199,\n          \"transaction_amount_currency\": \"string\",\n          \"exchange_rate\": 1011.2767321247962,\n          \"debit\": 8169.3652767536305,\n          \"credit\": 3001,\n          \"balance_amount\": 7617.544472352947,\n          \"debit_credit_currency\": \"string\",\n          \"transaction_status\": \"string\",\n          \"date\": \"string\",\n          \"description\": \"string\",\n          \"notes\": \"string\"\n        }\n      ]\n    },\n    \"start_date\": \"string\",\n    \"end_date\": \"string\"\n  },\n  \"errors\": null,\n  \"01K5EHM5AG34A0RDDRQZWNMS9Q\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "9245f82c-709f-444f-b377-07a954b35224",
+    "name": "Balad Gateway APIs/Authentication APIs/Link/Reconciliation API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Balad Gateway APIs — a suite of RESTful endpoints for secure inward cross-border remittances and payouts into Egypt (bank transfers, mobile wallets, cash pickup). Covers authentication, exchange rates, balance, secrets management, lookups, and the full transaction lifecycle. Assembled by API Evangelist from the provider's per-operation OpenAPI fragments published on developers.balad.tech.\n\nContact Support:\n Name: Balad Support\n Email: support@balad.me",
+      "type": "text/plain"
+    }
+  }
+}
