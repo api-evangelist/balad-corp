@@ -42,6 +42,16 @@ tags:
 - Payouts
 - Money Transfer
 - Banking
+tags_raw:
+- Company
+- Payments
+- Remittances
+- Cross-Border Payments
+- Fintech
+- Egypt
+- Payouts
+- Money Transfer
+- Banking
 - API
 apis:
 - aid: balad-corp:balad-corp-apis-authentication-api
