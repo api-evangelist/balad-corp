@@ -10,6 +10,17 @@ description: >-
   full sandbox for testing. Balad is backed by 500 Global, Acasia Ventures, First Circle Capital,
   Future Africa, and Launch Africa Ventures.
 url: https://raw.githubusercontent.com/api-evangelist/balad-corp/refs/heads/main/apis.yml
+deliveryModel:
+  model: unknown
+  open_source: false
+  commercial: false
+  callable_host: false
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - openapi
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: self-serve
