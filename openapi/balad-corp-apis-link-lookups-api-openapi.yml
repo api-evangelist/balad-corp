@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Balad Gateway APIs/Authentication APIs/Link/Lookups API
+  title: Balad Gateway AP Is/Link/Lookups API
   description: Balad Gateway APIs — a suite of RESTful endpoints for secure inward cross-border remittances and payouts into Egypt (bank transfers, mobile wallets, cash pickup). Covers authentication, exchange rates, balance, secrets management, lookups, and the full transaction lifecycle. Assembled by API Evangelist from the provider's per-operation OpenAPI fragments published on developers.balad.tech.
   version: 1.0.0
   contact:
@@ -15,7 +15,25 @@ paths:
     get:
       summary: Banks List
       deprecated: false
-      description: "This method retrieves a list of available banks in the system. The list can be filtered based on the **transaction type** and **receiving country** to provide a more refined set of results.\n\n### Filters:\n\n- **Transaction Type**: You can filter the list of banks based on the type of transaction being conducted. The supported transaction types are:\n    \n    1. **Cash**\n        \n    2. **Bank Account**\n        \n    3. **Wallet**\n        \n    4. **Card**"
+      description: 'This method retrieves a list of available banks in the system. The list can be filtered based on the **transaction type** and **receiving country** to provide a more refined set of results.
+
+
+        ### Filters:
+
+
+        - **Transaction Type**: You can filter the list of banks based on the type of transaction being conducted. The supported transaction types are:
+
+
+        1. **Cash**
+
+
+        2. **Bank Account**
+
+
+        3. **Wallet**
+
+
+        4. **Card**'
       tags:
       - APIs/Link/Lookups
       parameters:
@@ -97,6 +115,8 @@ paths:
       x-apidog-folder: APIs/Link/Lookups
       x-apidog-status: released
       x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-20919916-run
+      operationId: getRemitApiBanks
+      x-operation-id-source: derived
   /remit-api/v1/lookups/purposes:
     get:
       summary: Purposes List
@@ -172,6 +192,8 @@ paths:
       x-apidog-folder: APIs/Link/Lookups
       x-apidog-status: released
       x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-20919914-run
+      operationId: getRemitApiV1LookupsPurposes
+      x-operation-id-source: derived
   /remit-api/v1/lookups/relationships:
     get:
       summary: Relations
@@ -247,6 +269,8 @@ paths:
       x-apidog-folder: APIs/Link/Lookups
       x-apidog-status: released
       x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-20919917-run
+      operationId: getRemitApiV1LookupsRelationships
+      x-operation-id-source: derived
   /remit-api/v1/lookups/sources:
     get:
       summary: Sources List
@@ -322,9 +346,11 @@ paths:
       x-apidog-folder: APIs/Link/Lookups
       x-apidog-status: released
       x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-20919915-run
+      operationId: getRemitApiV1LookupsSources
+      x-operation-id-source: derived
 components:
   securitySchemes:
-    Balad Token:
+    Balad_Token:
       type: bearer
       scheme: bearer
     bearer:

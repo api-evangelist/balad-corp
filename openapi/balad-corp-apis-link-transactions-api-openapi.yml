@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Balad Gateway APIs/Authentication APIs/Link/Transactions API
+  title: Balad Gateway AP Is/Link/Transactions API
   description: Balad Gateway APIs — a suite of RESTful endpoints for secure inward cross-border remittances and payouts into Egypt (bank transfers, mobile wallets, cash pickup). Covers authentication, exchange rates, balance, secrets management, lookups, and the full transaction lifecycle. Assembled by API Evangelist from the provider's per-operation OpenAPI fragments published on developers.balad.tech.
   version: 1.0.0
   contact:
@@ -27,7 +27,15 @@ paths:
 
         | amount_usd | Integer | Y | This is the amount being sent and needs to be used for calculating the corresponding receiving amount. |
 
-        | transaction_type | Integer | N | The transaction type  <br>1- Cash  <br>2 - Account Credit  <br>3 - Wallet  <br>4 -Credit/Debit Card |
+        | transaction_type | Integer | N | The transaction type
+
+        1- Cash
+
+        2 - Account Credit
+
+        3 - Wallet
+
+        4 -Credit/Debit Card |
 
 
         **Response Params**
@@ -57,7 +65,7 @@ paths:
               type: object
               properties: {}
               x-apidog-orders: []
-            example: "{\r\n    \"amount_usd\":XXXX,\r\n    \"transaction_type\":X\r\n}"
+            example: "{\n    \"amount_usd\":XXXX,\n    \"transaction_type\":X\n}"
       responses:
         '200':
           description: ''
@@ -67,7 +75,7 @@ paths:
                 type: object
                 properties: {}
                 x-apidog-orders: []
-              example: "{\r\n    \"data\": [\r\n        {\r\n            \"currency_code\": \"EGP\",\r\n            \"amount\":XXX\r\n        },\r\n        {\r\n            \"currency_code\": \"USD\",\r\n            \"amount\":XXX\r\n        }\r\n    ],\r\n    \"errors\": null\r\n}\r\n"
+              example: "{\n    \"data\": [\n        {\n            \"currency_code\": \"EGP\",\n            \"amount\":XXX\n        },\n        {\n            \"currency_code\": \"USD\",\n            \"amount\":XXX\n        }\n    ],\n    \"errors\": null\n}\n"
           headers: {}
           x-apidog-name: EG Country
       security:
@@ -83,6 +91,8 @@ paths:
       x-apidog-folder: APIs/Link/Transactions
       x-apidog-status: released
       x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-20919923-run
+      operationId: postRemitApiV1TransactionsCalculateReceivingAmount
+      x-operation-id-source: derived
   /remit-api/v1/transactions/cancel:
     post:
       summary: Cancel transaction
@@ -96,30 +106,26 @@ paths:
         Only the following transaction statuses can be cancelled. Each status results in either an **Instant Cancel (Code 7)** or **Under Cancellation (Code 22)** depending on the case.
 
 
-
-        | Transaction Status Code | Transaction Status                   | Transaction Type | Resulting Status            |
+        | Transaction Status Code | Transaction Status | Transaction Type | Resulting Status |
 
         |-------------|-------------------------------|------------------|------------------------------|
 
-        | **0**       | Created                       | All              | **7 (Cancelled)**            |
+        | **0** | Created | All | **7 (Cancelled)** |
 
-        | **2**       | In Progress                   | Cash             | **22 (Under Cancellation)**  |
+        | **2** | In Progress | Cash | **22 (Under Cancellation)** |
 
-        | **8**       | Pending                       | All              | **7 (Cancelled)**            |
+        | **8** | Pending | All | **7 (Cancelled)** |
 
-        | **11**      | Balad Compliance Suspended    | All              | **7 (Cancelled)**            |
+        | **11** | Balad Compliance Suspended | All | **7 (Cancelled)** |
 
-        | **12**      | Balad Compliance Approved     | All              | **7 (Cancelled)**            |
+        | **12** | Balad Compliance Approved | All | **7 (Cancelled)** |
 
-        | **16**      | Bank Compliance Suspended     | Cash             | **22 (Under Cancellation)**  |
+        | **16** | Bank Compliance Suspended | Cash | **22 (Under Cancellation)** |
 
-        | **19**      | Ready For Pickup   | Cash             | **22 (Under Cancellation)**  |
-
+        | **19** | Ready For Pickup | Cash | **22 (Under Cancellation)** |
 
 
         ---
-
-
 
 
         ### Cancellation Reasons
@@ -129,41 +135,36 @@ paths:
         If none of the predefined reasons apply, set `reason` to **13** and include your explanation in `other_reason`.
 
 
-
-
-        | Code   | Reason                                                |
+        | Code | Reason |
 
         | ------ | ----------------------------------------------------- |
 
-        | **1**  | I entered the wrong recipient name                    |
+        | **1** | I entered the wrong recipient name |
 
-        | **2**  | I entered the wrong account, wallet, or phone number  |
+        | **2** | I entered the wrong account, wallet, or phone number |
 
-        | **3**  | I chose the wrong bank, wallet, or payout method      |
+        | **3** | I chose the wrong bank, wallet, or payout method |
 
-        | **4**  | I entered the wrong amount                            |
+        | **4** | I entered the wrong amount |
 
-        | **5**  | I no longer need to send this transfer                |
+        | **5** | I no longer need to send this transfer |
 
-        | **6**  | The recipient no longer needs the money               |
+        | **6** | The recipient no longer needs the money |
 
-        | **7**  | This is a duplicate transfer                          |
+        | **7** | This is a duplicate transfer |
 
-        | **8**  | The transfer is taking too long                       |
+        | **8** | The transfer is taking too long |
 
-        | **9**  | I will send the money using a different method        |
+        | **9** | I will send the money using a different method |
 
-        | **11** | Fees or exchange rate are not acceptable              |
+        | **11** | Fees or exchange rate are not acceptable |
 
         | **12** | I created this transaction by mistake (test or trial) |
 
-        | **13** | Other reason (please specify)                         |
+        | **13** | Other reason (please specify) |
 
 
-        ---
-
-
-        '
+        ---'
       tags:
       - APIs/Link/Transactions
       parameters:
@@ -385,11 +386,13 @@ paths:
       x-apidog-folder: APIs/Link/Transactions
       x-apidog-status: released
       x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-20919919-run
+      operationId: postRemitApiV1TransactionsCancel
+      x-operation-id-source: derived
   /remit-api/v1/transactions:
     post:
       summary: Create transaction
       deprecated: false
-      description: "This endpoint is used to **initiate a money transfer transaction** through Balad’s Collection API.  \nIt supports multiple transaction types (Cash, Card, Bank Account and Wallet) and requires sender, receiver, and transaction details to be passed in the request body.  \n\n ---\n\n<AccordionGroup>\n  <Accordion title=\"Sender Details\" defaultOpen>\n\n| **Parameter** | **Remarks** |\n| --- | --- |\n| sender_first_name | First or full legal name. Must match valid ID. Could be sender first name only or sender full name (Full Name must be the full legal name of the sender and must exactly match the name as it appears on the sender's valid ID.) |\n| sender_middle_name | Middle name. Same character rules as first name. |\n| sender_last_name | Last name. Same character rules as first name. |\n| sender_address | Full sender address. |\n| sender_dateofbirth | Format: `DD-MMM-YYYY`. Example: `01-JUN-2020`. |\n| sender_contact_no | Contact number. |\n| sender_identity | Identity type: 1 = Passport, 2 = Government-issued ID. |\n| sender_identity_no | ID/Passport number. Allowed: periods (.), commas (,), underscores (_), hyphens (-), space ( ). |\n| sender_identity_expiry_date | ID Expiry Date. Format: `DD-MMM-YYYY`. Must not be expired. |\n| sender_nationality | ISO alpha-2 country code (e.g., `US`, `EG`). |\n| sender_country_code | ISO alpha-2 country code of residence. |\n| sender_country_of_birth | Country of birth, valid country string (e.g., `Egypt`, `United States of America`). |\n| sender_gender | 1 = Male, 2 = Female. |\n\n  </Accordion>\n\n  <Accordion title=\"Receiver Details\">\n\n  | **Parameter** | **Remarks** |\n  | --- | --- |\n  | receiver_first_name | First or full legal name in English. Must match valid ID. |\n  | receiver_middle_name | Middle name. Same character rules as first name. |\n  | receiver_last_name | Last name. Same character rules as first name.|\n  | receiver_address | Required in some cases (e.g., Account transfer in USD except bank code `BDC`). |\n  | receiver_contact_no | Valid phone number. Egyptian format supported. In case of cash, if provided the receiver will receive SMS with transaction details on this number Examples: `+20101111145`, `020101111145`, `01011111145`. |\n  | receiver_identity_type | Identity type: 1 = Passport, 2 = Government-issued ID (default 2 if not sent). |\n  | receiver_identity_no | ID/Passport number. Allowed: periods (.), commas (,), underscores (_), hyphens (-), space ( ). |\n  | receiver_gender | 1 = Male, 2 = Female. |\n\n  </Accordion>\n\n  <Accordion title=\"Transaction Details\">\n\n  | **Parameter** | **Remarks** |\n  | --- | --- |\n  | transaction_type | 1 = Cash, 2 = Account Credit, 3 = Wallet, 4 = Card. |\n  | remitter_reference_no | Unique agent reference. Allowed: A–Z, a–z, 0–9, dash (-). |\n  | sending_currency_code | ISO 4217 currency code. Examples: `EGP`, `USD`. |\n  | amount | Amount with up to 2 decimals. Example: `2500.50`. |\n  | account_no | Account/Wallet/Card number. Rules: <br>• 16 digits for card <br>• 11 digits for wallet (Egyptian phone number format) <br>Examples: `+201055555333`, `01055555333`. <br>• IBAN for USD bank transfers <br>• Required in case transaction type 'Cash' and bank code 'POST'  |\n  | receiver_bank_code | Bank code (e.g., `BDC`, `POST`). Required in some cases. [Banks List](https://developers.balad.tech/banks-list-20919916e0.md) |\n  | source_of_remittance | Source code of transaction. List available via sources endpoint. [Sources List](https://developers.balad.tech/sources-list-20919915e0.md) |\n  | purpose | Purpose code of transaction. List available via purposes endpoint. [Purposes List](https://developers.balad.tech/purposes-list-20919914e0.md)|\n  | value_date | Format: `DD-MMM-YYYY`. Example: `01-JUN-2020`. Must be today or later. |\n  | business_model_type | Business model: 1 = C2C (default)|\n\n  </Accordion>\n</AccordionGroup>\n\n\n## Required Fields \n\n| Field                     | Cash Pickup (`1`) | Bank Account (`2`) | Wallet (`3`) |\n|---------------------------|-------------------|--------------------|--------------|\n| **transaction_type**      | ✅                | ✅                 | ✅           |\n| **remitter_reference_no** | ✅                | ✅                 | ✅           |\n| **sender_first_name**     | ✅                | ✅                 | ✅           |\n| **sender_last_name**      | ✅                | ✅                 | ❌           |\n| **sender_address**        | ✅                | ✅                 | ✅           |\n| **sender_dateofbirth**    | ✅                | ✅                 | ✅           |\n| **sender_contact_no**    | ❌                | ❌                 | ❌           |\n| **sender_identity (type)**| ❌                | ❌                 | ❌           |\n| **sender_identity_no**    | ❌                | ❌                 | ❌           |\n| **sender_identity_expiry_date**    | ❌                | ❌                 | ❌           |\n| **sender_nationality**    | ✅                | ✅                 | ✅           |\n| **sender_country_code**   | ✅                | ✅                 | ✅           |\n| **receiver_first_name**   | ✅                | ✅                 | ✅           |\n| **receiver_last_name**    | ❌                | ❌                 | ❌           |\n| **receiver_address**      | ❌                | ✅                 | ❌           |\n| **receiver_contact_no**   | ✅                | ❌               | ✅           |\n| **receiver_identity_type**  | ❌                | ❌                 | ❌           |\n| **receiver_identity_no**  | ❌                | ❌                | ❌           |\n| **receiver_gender**  | ❌                | ❌                | ❌           |\n| **receiver_relationship**  | ❌                | ❌                | ❌           |\n| **account_no**            | ❌               | ✅                 | ✅           |\n| **receiver_bank_code**    | ✅                | ✅                 | ❌           |\n| **sending_currency_code** | ✅                | ✅                 | ✅           |\n| **amount**                | ✅                | ✅                 | ✅           |\n| **source_of_remittance**               | ❌                | ❌                 | ❌           |\n| **purpose**               | ✅                | ✅                 | ✅           |\n| **value_date**            | ❌                | ❌                 | ❌           |\n| **business_model_type**   | ❌                | ❌                 | ❌           |\n\n---   \n\n"
+      description: This endpoint is used to **initiate a money transfer transaction** through Balad’s Collection API.
       tags:
       - APIs/Link/Transactions
       parameters:
@@ -1036,6 +1039,8 @@ paths:
       x-apidog-folder: APIs/Link/Transactions
       x-apidog-status: released
       x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-20919918-run
+      operationId: postRemitApiV1Transactions
+      x-operation-id-source: derived
     get:
       summary: Transactions List
       deprecated: false
@@ -1081,7 +1086,9 @@ paths:
 
         | 7 | bank_reference_no | Bank Reference Number |
 
-        | 8 | type | Transaction type  <br>ex. "AccountCredit" |
+        | 8 | type | Transaction type
+
+        ex. "AccountCredit" |
 
         | 9 | sender_name | Sender Name |
 
@@ -1089,7 +1096,9 @@ paths:
 
         | 11 | account_no | Beneficiary''s Account Number. |
 
-        | 13 | paid_date | Beneficiary Cash Collected/Account  <br>Deposited Date |
+        | 13 | paid_date | Beneficiary Cash Collected/Account
+
+        Deposited Date |
 
         | 14 | status | Transaction status code and description |
 
@@ -1464,6 +1473,8 @@ paths:
       x-apidog-folder: APIs/Link/Transactions
       x-apidog-status: released
       x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-20919921-run
+      operationId: getRemitApiV1Transactions
+      x-operation-id-source: derived
   /remit-api/v1/transactions/export:
     get:
       summary: Export Transactions List
@@ -1773,6 +1784,8 @@ paths:
       x-apidog-folder: APIs/Link/Transactions
       x-apidog-status: released
       x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-21744276-run
+      operationId: getRemitApiV1TransactionsExport
+      x-operation-id-source: derived
   /remit-api/v2/transactions/{remitter_reference_no}/status:
     get:
       summary: Get transaction status V2
@@ -1858,9 +1871,7 @@ paths:
 
         **`MSC_001`** is a generic, catch-all failure reason used when a rejection from the bank doesn''t map to a specific, known Balad failure code. We recommend logging these cases and contacting Balad support if they occur frequently.
 
-        :::
-
-        '
+        :::'
       tags:
       - APIs/Link/Transactions
       parameters:
@@ -2072,11 +2083,34 @@ paths:
       x-apidog-folder: APIs/Link/Transactions
       x-apidog-status: released
       x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-23798903-run
+      operationId: getRemitApiV2TransactionsByRemitterReferenceNoStatus
+      x-operation-id-source: derived
   /remit-api/v1/transactions/update:
     post:
       summary: Update transaction
       deprecated: false
-      description: "The Update Receiver Info API allows partners to request corrections to receiver information (name and contact number) for an existing transaction. \n\n### Important Notes\n- Updates can only be requested for Cash Transactions and statuses that is **not Final Status**. Check it at [Transaction Lifecycle](https://developers.balad.tech/transaction-lifecycle-v2-1733418m0.md)\n- A support ticket is automatically created for operations team to review and approve the update\n\n## Request Processing Logic\n\n| Transaction Status              | Auto Update | Ticket Created | request_status | request_status_code |\n|---------------------------------|-------------|----------------|----------------|---------------------|\n| Pending                         | Yes         | No             | Updated        | 1                   |\n| Balad Compliance Suspended      | Yes         | No             | Updated        | 1                   |\n| Sent to BDC (Not Final)         | No          | Yes            | In Progress    | 2                   |"
+      description: 'The Update Receiver Info API allows partners to request corrections to receiver information (name and contact number) for an existing transaction.
+
+
+        ### Important Notes
+
+        - Updates can only be requested for Cash Transactions and statuses that is **not Final Status**. Check it at Transaction Lifecycle
+
+        - A support ticket is automatically created for operations team to review and approve the update
+
+
+        ## Request Processing Logic
+
+
+        | Transaction Status | Auto Update | Ticket Created | request_status | request_status_code |
+
+        |---------------------------------|-------------|----------------|----------------|---------------------|
+
+        | Pending | Yes | No | Updated | 1 |
+
+        | Balad Compliance Suspended | Yes | No | Updated | 1 |
+
+        | Sent to BDC (Not Final) | No | Yes | In Progress | 2 |'
       tags:
       - APIs/Link/Transactions
       parameters: []
@@ -2130,11 +2164,13 @@ paths:
                       remitter_reference_no:
                         type: string
                       delivery_estimate:
-                        type: string
-                        nullable: true
+                        type:
+                        - string
+                        - 'null'
                       bank_reference_no:
-                        type: string
-                        nullable: true
+                        type:
+                        - string
+                        - 'null'
                     required:
                     - request_status
                     - request_status_code
@@ -2267,6 +2303,8 @@ paths:
       x-apidog-folder: APIs/Link/Transactions
       x-apidog-status: released
       x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-22206972-run
+      operationId: postRemitApiV1TransactionsUpdate
+      x-operation-id-source: derived
   /remit-api/v1/transactions/validate-account:
     post:
       summary: Validate Account
@@ -2384,9 +2422,11 @@ paths:
       x-apidog-folder: APIs/Link/Transactions
       x-apidog-status: released
       x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-28115248-run
+      operationId: postRemitApiV1TransactionsValidateAccount
+      x-operation-id-source: derived
 components:
   securitySchemes:
-    Balad Token:
+    Balad_Token:
       type: bearer
       scheme: bearer
     bearer:

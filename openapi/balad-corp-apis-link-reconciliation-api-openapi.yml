@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Balad Gateway APIs/Authentication APIs/Link/Reconciliation API
+  title: Balad Gateway AP Is/Link/Reconciliation API
   description: Balad Gateway APIs — a suite of RESTful endpoints for secure inward cross-border remittances and payouts into Egypt (bank transfers, mobile wallets, cash pickup). Covers authentication, exchange rates, balance, secrets management, lookups, and the full transaction lifecycle. Assembled by API Evangelist from the provider's per-operation OpenAPI fragments published on developers.balad.tech.
   version: 1.0.0
   contact:
@@ -74,11 +74,13 @@ paths:
                       to_date:
                         type: string
                       opening_balance:
-                        type: number
-                        nullable: true
+                        type:
+                        - number
+                        - 'null'
                       closing_balance:
-                        type: number
-                        nullable: true
+                        type:
+                        - number
+                        - 'null'
                       transactions:
                         type: object
                         properties:
@@ -215,9 +217,11 @@ paths:
       x-apidog-folder: APIs/Link/Reconciliation
       x-apidog-status: released
       x-run-in-apidog: https://app.apidog.com/web/project/1056134/apis/api-21667941-run
+      operationId: getRemitApiV1Reconciliation
+      x-operation-id-source: derived
 components:
   securitySchemes:
-    Balad Token:
+    Balad_Token:
       type: bearer
       scheme: bearer
     bearer:
