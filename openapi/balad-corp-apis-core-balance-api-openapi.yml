@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Balad Gateway AP Is/Core/Balance API
+  title: Balad Gateway APIs/Core/Balance API
   description: Balad Gateway APIs — a suite of RESTful endpoints for secure inward cross-border remittances and payouts into Egypt (bank transfers, mobile wallets, cash pickup). Covers authentication, exchange rates, balance, secrets management, lookups, and the full transaction lifecycle. Assembled by API Evangelist from the provider's per-operation OpenAPI fragments published on developers.balad.tech.
   version: 1.0.0
   contact:

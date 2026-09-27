@@ -1,5 +1,5 @@
 aid: balad-corp
-name: BALAD CORP
+name: BALAD
 description: >-
   BALAD CORP (Balad) is a Cairo-based fintech providing cross-border payout and inward-remittance
   infrastructure for Egypt. Its Balad Gateway APIs let money transfer operators (MTOs), RemTechs,
@@ -239,3 +239,4 @@ x-enrichment:
   status: backfilled
   pass: local-v1
   note: backfilled from .gitignore signal + verified work evidence
+x-legal-name: BALAD CORP
