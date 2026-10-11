@@ -1,0 +1,18 @@
+generated: '2026-10-12'
+method: none
+source:
+- https://zapier.com/apps/balad-corp/integrations
+- https://zapier.com/apps/balad/integrations
+- https://n8n.io/integrations/balad-corp/
+- https://composio.dev/toolkits/balad-corp
+- https://monid.ai/tools/balad-corp
+checked:
+- https://composio.dev/toolkits/balad-corp
+- https://monid.ai/tools/balad-corp
+- https://n8n.io/integrations/balad-corp/
+- https://zapier.com/apps/balad-corp/integrations
+- https://zapier.com/apps/balad/integrations
+summary: null
+marketplace_apps: []
+edges: []
+templates: []
