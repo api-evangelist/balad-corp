@@ -1,4 +1,4 @@
-# BALAD CORP
+# BALAD
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,6 +64,135 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-BALAD CORP is a company surfaced as a portfolio company of 500-global and added to the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+BALAD CORP (Balad) is a Cairo-based fintech providing cross-border payout and inward-remittance infrastructure for Egypt. Its Balad Gateway APIs let money transfer operators (MTOs), RemTechs, and superapps pay out to Egyptian beneficiaries via bank transfer to CBE-licensed banks over IPN, mobile wallets, and cash pickup at agent locations nationwide. The REST APIs are secured with OAuth 2.0 client credentials and cover exchange rates, balances, secrets management, lookups, transaction creation, status tracking, reconciliation, and HMAC-signed status webhooks, with a full sandbox for testing. Balad is backed by 500 Global, Acasia Ventures, First Circle Capital, Future Africa, and Launch Africa Ventures.
 
-Backed by: 500-global — https://balad.me
+**Areas:** Company · Payments · Remittances · Cross-Border Payments · Fintech · Egypt · Payouts · Money Transfer · Banking
+
+## BALAD on APIs.io
+
+Everything profiled for BALAD is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/balad-corp/](https://apis.io/providers/balad-corp/)** — or go straight to one of the APIs or properties below.
+
+### APIs (7)
+
+- [BALAD CORP APIs/Authentication API](https://apis.io/apis/balad-corp/balad-corp-apis-authentication-api/) — The APIs/Authentication API from BALAD CORP — 1 operation(s) for apis/authentication.
+- [BALAD CORP APIs/Core/Balance API](https://apis.io/apis/balad-corp/balad-corp-apis-core-balance-api/) — The APIs/Core/Balance API from BALAD CORP — 1 operation(s) for apis/core/balance.
+- [BALAD CORP APIs/Core/Exchange rate API](https://apis.io/apis/balad-corp/balad-corp-apis-core-exchange-rate-api/) — The APIs/Core/Exchange rate API from BALAD CORP — 1 operation(s) for apis/core/exchange rate.
+- [BALAD CORP APIs/Core/Secrets API](https://apis.io/apis/balad-corp/balad-corp-apis-core-secrets-api/) — The APIs/Core/Secrets API from BALAD CORP — 2 operation(s) for apis/core/secrets.
+- [BALAD CORP APIs/Link/Lookups API](https://apis.io/apis/balad-corp/balad-corp-apis-link-lookups-api/) — The APIs/Link/Lookups API from BALAD CORP — 4 operation(s) for apis/link/lookups.
+- [BALAD CORP APIs/Link/Reconciliation API](https://apis.io/apis/balad-corp/balad-corp-apis-link-reconciliation-api/) — The APIs/Link/Reconciliation API from BALAD CORP — 1 operation(s) for apis/link/reconciliation.
+- [BALAD CORP APIs/Link/Transactions API](https://apis.io/apis/balad-corp/balad-corp-apis-link-transactions-api/) — The APIs/Link/Transactions API from BALAD CORP — 7 operation(s) for apis/link/transactions.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Balad Gateway Webhooks](https://apis.io/asyncapis/balad-corp/balad-corp-webhooks-asyncapi/)
+
+#### Event channels (1)
+
+Individual events and webhooks the provider emits.
+
+- [{partnerWebhookUrl}](https://apis.io/channels/balad-corp/partnerwebhookurl/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [balad-corp](https://apis.io/servers/balad-corp/balad-corp/)
+
+#### Collections (7)
+
+Postman and Open Collection request collections.
+
+- [Balad Gateway APIs/Authentication API](https://apis.io/collections/balad-corp/open-balad-corp-apis-authentication-api/)
+- [Balad Gateway APIs/Authentication APIs/Core/Balance API](https://apis.io/collections/balad-corp/open-balad-corp-apis-core-balance-api/)
+- [Balad Gateway APIs/Authentication APIs/Core/Exchange rate API](https://apis.io/collections/balad-corp/open-balad-corp-apis-core-exchange-rate-api/)
+- [Balad Gateway APIs/Authentication APIs/Core/Secrets API](https://apis.io/collections/balad-corp/open-balad-corp-apis-core-secrets-api/)
+- [Balad Gateway APIs/Authentication APIs/Link/Lookups API](https://apis.io/collections/balad-corp/open-balad-corp-apis-link-lookups-api/)
+- [Balad Gateway APIs/Authentication APIs/Link/Reconciliation API](https://apis.io/collections/balad-corp/open-balad-corp-apis-link-reconciliation-api/)
+- [Balad Gateway APIs/Authentication APIs/Link/Transactions API](https://apis.io/collections/balad-corp/open-balad-corp-apis-link-transactions-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Balad Corp Gateway Overlay](https://apis.io/overlays/balad-corp/balad-corp-gateway-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Balad Corp Authentication](https://apis.io/security/balad-corp/balad-corp-authentication/)
+- [Balad Corp Domain Security](https://apis.io/security/balad-corp/balad-corp-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Balad Corp Scopes](https://apis.io/scopes/balad-corp/balad-corp-scopes/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://balad.me)
+- [Documentation](https://developers.balad.tech/)
+- [Getting started](https://developers.balad.tech/get-started-1459813m0.md)
+- [API reference](https://developers.balad.tech/core.md)
+
+## API Evangelist rating
+
+**Kin Score 35.2** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 53.2 |
+| Contract governance | 4.5 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 63.7 |
+| Access clarity | 0.0 |
+
+**Agent readiness 30.3** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | documented (partial credit) |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | — |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 26.8** — Banking & Open Finance
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/balad-corp/](https://apis.io/providers/balad-corp/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for BALAD: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/balad-corp/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
